@@ -74,3 +74,21 @@ def test_crop_image_uses_clipped_box() -> None:
     assert crop_image(image, Box(70, 40, 30, 30)).shape == (10, 10, 3)
     with pytest.raises(ValueError):
         crop_image(image, Box(100, 100, 5, 5))
+
+
+def test_clean_neighbors_keeps_pale_parts_of_the_pin_and_removes_neighbors() -> None:
+    import cv2
+
+    from app.vision.cropper import clean_neighbors
+
+    felt = (225, 220, 205)
+    crop = np.full((300, 300, 3), felt, np.uint8)
+    cv2.circle(crop, (170, 150), 70, (220, 60, 120), -1)          # the pin's body
+    cv2.circle(crop, (85, 150), 22, (165, 225, 190), -1)          # its pale mint head, a separate blob
+    cv2.rectangle(crop, (0, 0), (40, 300), (60, 110, 220), -1)     # neighbouring pin at the edge
+    own_box = Box(60, 80, 180, 140)
+
+    cleaned = clean_neighbors(crop, own_box)
+
+    assert np.abs(cleaned[150, 85].astype(int) - crop[150, 85]).sum() < 10   # head kept
+    assert np.abs(cleaned[150, 20].astype(int) - np.array(felt)).sum() < 40  # neighbour painted over

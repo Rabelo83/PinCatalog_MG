@@ -20,15 +20,15 @@
      "name": "orange"
     },
     {
-     "hex": "#5a4751",
+     "hex": "#584450",
      "name": "pink"
     },
     {
-     "hex": "#736964",
-     "name": "gray"
+     "hex": "#716762",
+     "name": "dark gray"
     },
     {
-     "hex": "#222123",
+     "hex": "#222021",
      "name": "black"
     }
    ],
@@ -53,7 +53,7 @@
    ],
    "colors": [
     {
-     "hex": "#c975a2",
+     "hex": "#c876a0",
      "name": "pink"
     },
     {
@@ -61,7 +61,7 @@
      "name": "green"
     },
     {
-     "hex": "#777b79",
+     "hex": "#787a79",
      "name": "gray"
     },
     {
@@ -69,7 +69,7 @@
      "name": "black"
     },
     {
-     "hex": "#57505a",
+     "hex": "#564e57",
      "name": "dark gray"
     }
    ],
@@ -93,7 +93,7 @@
    ],
    "colors": [
     {
-     "hex": "#9ea19c",
+     "hex": "#878d84",
      "name": "gray"
     },
     {
@@ -101,12 +101,12 @@
      "name": "teal"
     },
     {
-     "hex": "#656860",
-     "name": "dark gray"
-    },
-    {
      "hex": "#18201e",
      "name": "black"
+    },
+    {
+     "hex": "#464d46",
+     "name": "dark gray"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -130,15 +130,15 @@
    ],
    "colors": [
     {
-     "hex": "#6c7568",
+     "hex": "#6d7669",
      "name": "green"
     },
     {
-     "hex": "#97958a",
+     "hex": "#98968b",
      "name": "gray"
     },
     {
-     "hex": "#49544f",
+     "hex": "#4a5450",
      "name": "dark gray"
     },
     {
@@ -146,7 +146,7 @@
      "name": "black"
     },
     {
-     "hex": "#9c5e76",
+     "hex": "#9d5f77",
      "name": "pink"
     }
    ],
@@ -170,24 +170,24 @@
    ],
    "colors": [
     {
-     "hex": "#665c5b",
-     "name": "dark gray"
-    },
-    {
-     "hex": "#9f9691",
+     "hex": "#9a9690",
      "name": "gray"
     },
     {
-     "hex": "#887873",
-     "name": "red"
+     "hex": "#574a4e",
+     "name": "dark gray"
     },
     {
-     "hex": "#dda898",
+     "hex": "#1e1f20",
+     "name": "black"
+    },
+    {
+     "hex": "#ddad9b",
      "name": "orange"
     },
     {
-     "hex": "#171b1d",
-     "name": "black"
+     "hex": "#bd7878",
+     "name": "red"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -294,7 +294,7 @@
    ],
    "colors": [
     {
-     "hex": "#7f6b5e",
+     "hex": "#80695c",
      "name": "brown"
     },
     {
@@ -306,7 +306,7 @@
      "name": "pink"
     },
     {
-     "hex": "#211e1a",
+     "hex": "#211d19",
      "name": "black"
     }
    ],
@@ -361,19 +361,19 @@
    ],
    "colors": [
     {
-     "hex": "#998e8d",
+     "hex": "#948d8b",
      "name": "gray"
     },
     {
-     "hex": "#a0626f",
+     "hex": "#d8a9a8",
      "name": "pink"
     },
     {
-     "hex": "#18191c",
+     "hex": "#17181b",
      "name": "black"
     },
     {
-     "hex": "#4a4343",
+     "hex": "#443d3d",
      "name": "dark gray"
     }
    ],
@@ -507,20 +507,24 @@
    ],
    "colors": [
     {
-     "hex": "#72675f",
+     "hex": "#6b564c",
      "name": "brown"
     },
     {
-     "hex": "#0c0d0f",
+     "hex": "#83847c",
+     "name": "gray"
+    },
+    {
+     "hex": "#101010",
      "name": "black"
     },
     {
-     "hex": "#96837a",
-     "name": "orange"
+     "hex": "#b57161",
+     "name": "red"
     },
     {
-     "hex": "#a5a09c",
-     "name": "gray"
+     "hex": "#c3b2a7",
+     "name": "beige"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -618,11 +622,11 @@
    ],
    "colors": [
     {
-     "hex": "#656261",
+     "hex": "#646060",
      "name": "dark gray"
     },
     {
-     "hex": "#2e2d33",
+     "hex": "#2c2b32",
      "name": "black"
     },
     {
@@ -630,7 +634,7 @@
      "name": "gray"
     },
     {
-     "hex": "#b69ea5",
+     "hex": "#bea4a9",
      "name": "pink"
     }
    ],
@@ -757,12 +761,16 @@
    ],
    "colors": [
     {
-     "hex": "#b83924",
+     "hex": "#b83926",
      "name": "brown"
     },
     {
      "hex": "#1a0d0a",
      "name": "black"
+    },
+    {
+     "hex": "#7c736a",
+     "name": "gray"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -929,15 +937,15 @@
    ],
    "colors": [
     {
-     "hex": "#7c6e65",
+     "hex": "#7d6f66",
      "name": "brown"
     },
     {
-     "hex": "#10080a",
+     "hex": "#0d0709",
      "name": "black"
     },
     {
-     "hex": "#968176",
+     "hex": "#9a8376",
      "name": "orange"
     }
    ],

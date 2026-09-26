@@ -111,6 +111,12 @@ def clean_neighbors(crop: np.ndarray, pin_box: Box, distance_threshold: float = 
 
     count, labels = cv2.connectedComponents(foreground)
     own_labels = set(np.unique(labels[core & (foreground > 0)]).tolist()) - {0}
+    # Pale parts of the pin (a mint head, white fur) can show up as separate
+    # blobs; anything lying mostly inside the pin's own box belongs to it.
+    for label in range(1, count):
+        blob = labels == label
+        if label not in own_labels and (blob & inside).sum() >= 0.5 * blob.sum():
+            own_labels.add(label)
     neighbor = ((foreground > 0) & ~np.isin(labels, list(own_labels))).astype(np.uint8)
     outside = ((foreground > 0) & ~inside).astype(np.uint8)
     # Cover each leftover piece by its filled convex hull, so pale enamel and
