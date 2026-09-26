@@ -5,33 +5,30 @@
  "pins": [
   {
    "code": "PIN-000001",
-   "title": "Flower hedgehog",
+   "title": "Sleepy Flower Hedgehog",
    "description": "",
    "category": "Animals",
-   "subcategory": "",
+   "subcategory": "Woodland",
    "tags": [
     "flowers",
-    "hedgehog"
+    "hedgehog",
+    "sleeping"
    ],
    "colors": [
     {
-     "hex": "#aa928c",
+     "hex": "#e3bba6",
+     "name": "orange"
+    },
+    {
+     "hex": "#5a4751",
+     "name": "pink"
+    },
+    {
+     "hex": "#736964",
      "name": "gray"
     },
     {
-     "hex": "#5e4f54",
-     "name": "dark gray"
-    },
-    {
-     "hex": "#e2bdad",
-     "name": "beige"
-    },
-    {
-     "hex": "#827370",
-     "name": "gray"
-    },
-    {
-     "hex": "#262425",
+     "hex": "#222123",
      "name": "black"
     }
    ],
@@ -45,31 +42,35 @@
   },
   {
    "code": "PIN-000002",
-   "title": "",
+   "title": "Succulent Butterfly",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Garden",
+   "tags": [
+    "butterfly",
+    "flowers",
+    "succulents"
+   ],
    "colors": [
     {
-     "hex": "#96988f",
+     "hex": "#c975a2",
+     "name": "pink"
+    },
+    {
+     "hex": "#909b88",
+     "name": "green"
+    },
+    {
+     "hex": "#777b79",
      "name": "gray"
     },
     {
-     "hex": "#696a69",
-     "name": "gray"
-    },
-    {
-     "hex": "#212222",
+     "hex": "#1b1e1f",
      "name": "black"
     },
     {
-     "hex": "#ce77a3",
-     "name": "pink"
-    },
-    {
-     "hex": "#e1afc6",
-     "name": "pink"
+     "hex": "#57505a",
+     "name": "dark gray"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -81,30 +82,30 @@
   },
   {
    "code": "PIN-000003",
-   "title": "",
+   "title": "Blooming Whale",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Sea",
+   "tags": [
+    "flowers",
+    "ocean",
+    "whale"
+   ],
    "colors": [
     {
-     "hex": "#a4ceca",
-     "name": "light blue"
-    },
-    {
-     "hex": "#a3a49e",
+     "hex": "#9ea19c",
      "name": "gray"
     },
     {
-     "hex": "#7f867c",
-     "name": "gray"
+     "hex": "#98cecb",
+     "name": "teal"
     },
     {
-     "hex": "#555a51",
+     "hex": "#656860",
      "name": "dark gray"
     },
     {
-     "hex": "#1c2421",
+     "hex": "#18201e",
      "name": "black"
     }
    ],
@@ -117,31 +118,36 @@
   },
   {
    "code": "PIN-000004",
-   "title": "",
+   "title": "Rose Garden Sea Turtle",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Sea",
+   "tags": [
+    "flowers",
+    "ocean",
+    "roses",
+    "turtle"
+   ],
    "colors": [
     {
-     "hex": "#5f6e5e",
+     "hex": "#6c7568",
      "name": "green"
     },
     {
-     "hex": "#948d83",
+     "hex": "#97958a",
      "name": "gray"
     },
     {
-     "hex": "#464c4b",
+     "hex": "#49544f",
      "name": "dark gray"
     },
     {
-     "hex": "#9a5c74",
-     "name": "pink"
+     "hex": "#1b221f",
+     "name": "black"
     },
     {
-     "hex": "#19201d",
-     "name": "black"
+     "hex": "#9c5e76",
+     "name": "pink"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -153,31 +159,35 @@
   },
   {
    "code": "PIN-000005",
-   "title": "",
+   "title": "Flower Crown Cow",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Farm",
+   "tags": [
+    "cow",
+    "flower crown",
+    "flowers"
+   ],
    "colors": [
     {
-     "hex": "#97938d",
-     "name": "gray"
-    },
-    {
-     "hex": "#554a4d",
+     "hex": "#665c5b",
      "name": "dark gray"
     },
     {
-     "hex": "#1e1e1f",
-     "name": "black"
+     "hex": "#9f9691",
+     "name": "gray"
     },
     {
-     "hex": "#ddad9b",
+     "hex": "#887873",
+     "name": "red"
+    },
+    {
+     "hex": "#dda898",
      "name": "orange"
     },
     {
-     "hex": "#bc7a79",
-     "name": "red"
+     "hex": "#171b1d",
+     "name": "black"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -189,34 +199,34 @@
   },
   {
    "code": "PIN-000006",
-   "title": "",
+   "title": "Succulent Hedgehog",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Woodland",
+   "tags": [
+    "hedgehog",
+    "roses",
+    "succulents"
+   ],
    "colors": [
     {
-     "hex": "#7a7f75",
-     "name": "gray"
-    },
-    {
-     "hex": "#5a5353",
-     "name": "dark gray"
-    },
-    {
-     "hex": "#242523",
-     "name": "black"
-    },
-    {
-     "hex": "#bd92a9",
+     "hex": "#7a6b70",
      "name": "pink"
     },
     {
-     "hex": "#8c657e",
-     "name": "purple"
+     "hex": "#858a80",
+     "name": "gray"
     },
     {
-     "hex": "#a0bea3",
+     "hex": "#594f51",
+     "name": "dark gray"
+    },
+    {
+     "hex": "#222521",
+     "name": "black"
+    },
+    {
+     "hex": "#9fbfa4",
      "name": "green"
     }
    ],
@@ -229,34 +239,37 @@
   },
   {
    "code": "PIN-000007",
-   "title": "",
+   "title": "Pink & Blue Floral Butterfly",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Garden",
+   "tags": [
+    "butterfly",
+    "flowers"
+   ],
    "colors": [
     {
-     "hex": "#818480",
+     "hex": "#838682",
      "name": "gray"
     },
     {
-     "hex": "#1b1e1f",
-     "name": "black"
-    },
-    {
-     "hex": "#474e51",
-     "name": "dark gray"
-    },
-    {
-     "hex": "#655c86",
+     "hex": "#636177",
      "name": "blue"
     },
     {
-     "hex": "#c3829d",
+     "hex": "#171c1c",
+     "name": "black"
+    },
+    {
+     "hex": "#3f424b",
+     "name": "dark gray"
+    },
+    {
+     "hex": "#c1809a",
      "name": "pink"
     },
     {
-     "hex": "#c0b7c7",
+     "hex": "#c9b4c9",
      "name": "lavender"
     }
    ],
@@ -269,14 +282,19 @@
   },
   {
    "code": "PIN-000008",
-   "title": "",
+   "title": "Kitten in a Flower Basket",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Pets",
+   "tags": [
+    "basket",
+    "cat",
+    "flowers",
+    "kitten"
+   ],
    "colors": [
     {
-     "hex": "#80695c",
+     "hex": "#7f6b5e",
      "name": "brown"
     },
     {
@@ -288,7 +306,7 @@
      "name": "pink"
     },
     {
-     "hex": "#211d19",
+     "hex": "#211e1a",
      "name": "black"
     }
    ],
@@ -301,22 +319,26 @@
   },
   {
    "code": "PIN-000009",
-   "title": "",
+   "title": "Rose Shell Turtle",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Sea",
+   "tags": [
+    "flowers",
+    "roses",
+    "turtle"
+   ],
    "colors": [
     {
-     "hex": "#848c7d",
+     "hex": "#878d7e",
      "name": "green"
     },
     {
-     "hex": "#d295b0",
+     "hex": "#d494b0",
      "name": "pink"
     },
     {
-     "hex": "#22221e",
+     "hex": "#23231f",
      "name": "black"
     }
    ],
@@ -329,26 +351,29 @@
   },
   {
    "code": "PIN-000010",
-   "title": "",
+   "title": "Spotted Cow with Flowers",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Farm",
+   "tags": [
+    "cow",
+    "flowers"
+   ],
    "colors": [
     {
-     "hex": "#988f8d",
+     "hex": "#998e8d",
      "name": "gray"
     },
     {
-     "hex": "#d5afa9",
+     "hex": "#a0626f",
      "name": "pink"
     },
     {
-     "hex": "#17191b",
+     "hex": "#18191c",
      "name": "black"
     },
     {
-     "hex": "#484141",
+     "hex": "#4a4343",
      "name": "dark gray"
     }
    ],
@@ -361,11 +386,15 @@
   },
   {
    "code": "PIN-000011",
-   "title": "",
+   "title": "Otter with Sunflowers",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Woodland",
+   "tags": [
+    "flowers",
+    "otter",
+    "sunflowers"
+   ],
    "colors": [
     {
      "hex": "#524d3e",
@@ -397,26 +426,31 @@
   },
   {
    "code": "PIN-000012",
-   "title": "",
+   "title": "Dachshund with a Bouquet",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Pets",
+   "tags": [
+    "bouquet",
+    "dachshund",
+    "dog",
+    "flowers"
+   ],
    "colors": [
     {
-     "hex": "#64605e",
+     "hex": "#5f5a5a",
      "name": "dark gray"
     },
     {
-     "hex": "#19181d",
+     "hex": "#18171b",
      "name": "black"
     },
     {
-     "hex": "#8d877f",
+     "hex": "#88847c",
      "name": "gray"
     },
     {
-     "hex": "#a3544b",
+     "hex": "#a3544d",
      "name": "brown"
     }
    ],
@@ -429,11 +463,15 @@
   },
   {
    "code": "PIN-000013",
-   "title": "",
+   "title": "Giraffe with Roses",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Safari",
+   "tags": [
+    "flowers",
+    "giraffe",
+    "roses"
+   ],
    "colors": [
     {
      "hex": "#563129",
@@ -457,31 +495,32 @@
   },
   {
    "code": "PIN-000014",
-   "title": "",
+   "title": "Jar of Kittens and Flowers",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Pets",
+   "tags": [
+    "cat",
+    "flowers",
+    "jar",
+    "kitten"
+   ],
    "colors": [
     {
-     "hex": "#6b564c",
+     "hex": "#72675f",
      "name": "brown"
     },
     {
-     "hex": "#83847c",
-     "name": "gray"
-    },
-    {
-     "hex": "#101010",
+     "hex": "#0c0d0f",
      "name": "black"
     },
     {
-     "hex": "#b57161",
-     "name": "red"
+     "hex": "#96837a",
+     "name": "orange"
     },
     {
-     "hex": "#c3b2a7",
-     "name": "beige"
+     "hex": "#a5a09c",
+     "name": "gray"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -493,31 +532,35 @@
   },
   {
    "code": "PIN-000015",
-   "title": "",
+   "title": "Pastel Flower Bird",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Birds",
+   "tags": [
+    "bird",
+    "flowers",
+    "pastel"
+   ],
    "colors": [
     {
-     "hex": "#3f3661",
+     "hex": "#403662",
      "name": "blue"
     },
     {
-     "hex": "#a5a8c5",
+     "hex": "#a4a6c1",
      "name": "lavender"
     },
     {
-     "hex": "#7e7b76",
+     "hex": "#777572",
      "name": "gray"
-    },
-    {
-     "hex": "#181422",
-     "name": "navy"
     },
     {
      "hex": "#c26f9e",
      "name": "pink"
+    },
+    {
+     "hex": "#191526",
+     "name": "navy"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -529,11 +572,14 @@
   },
   {
    "code": "PIN-000016",
-   "title": "",
+   "title": "Totoro with a Pink Flower",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Characters",
+   "subcategory": "Studio Ghibli",
+   "tags": [
+    "flowers",
+    "totoro"
+   ],
    "colors": [
     {
      "hex": "#7c7e7c",
@@ -561,26 +607,30 @@
   },
   {
    "code": "PIN-000017",
-   "title": "",
+   "title": "Bunny in the Flowers",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Woodland",
+   "tags": [
+    "bunny",
+    "flowers",
+    "rabbit"
+   ],
    "colors": [
     {
-     "hex": "#313035",
-     "name": "black"
-    },
-    {
-     "hex": "#4d4a4c",
+     "hex": "#656261",
      "name": "dark gray"
     },
     {
-     "hex": "#858085",
+     "hex": "#2e2d33",
+     "name": "black"
+    },
+    {
+     "hex": "#817d80",
      "name": "gray"
     },
     {
-     "hex": "#bfa5aa",
+     "hex": "#b69ea5",
      "name": "pink"
     }
    ],
@@ -593,18 +643,21 @@
   },
   {
    "code": "PIN-000018",
-   "title": "",
+   "title": "Flower Dino",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Dinosaurs",
+   "tags": [
+    "dinosaur",
+    "flowers"
+   ],
    "colors": [
     {
-     "hex": "#e1d486",
+     "hex": "#e3d587",
      "name": "yellow"
     },
     {
-     "hex": "#111310",
+     "hex": "#161611",
      "name": "black"
     }
    ],
@@ -617,11 +670,14 @@
   },
   {
    "code": "PIN-000019",
-   "title": "",
+   "title": "Cavalier Puppy",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Pets",
+   "tags": [
+    "dog",
+    "puppy"
+   ],
    "colors": [
     {
      "hex": "#8a3427",
@@ -649,26 +705,30 @@
   },
   {
    "code": "PIN-000020",
-   "title": "",
+   "title": "Baby Dory",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Characters",
+   "subcategory": "Finding Nemo",
+   "tags": [
+    "dory",
+    "fish",
+    "ocean"
+   ],
    "colors": [
     {
      "hex": "#2066ab",
      "name": "blue"
     },
     {
-     "hex": "#080a12",
+     "hex": "#070a14",
      "name": "black"
     },
     {
      "hex": "#796a6c",
-     "name": "pink"
+     "name": "gray"
     },
     {
-     "hex": "#463e4d",
+     "hex": "#453b4d",
      "name": "purple"
     },
     {
@@ -685,18 +745,23 @@
   },
   {
    "code": "PIN-000021",
-   "title": "",
+   "title": "Nemo",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Characters",
+   "subcategory": "Finding Nemo",
+   "tags": [
+    "clownfish",
+    "fish",
+    "nemo",
+    "ocean"
+   ],
    "colors": [
     {
-     "hex": "#b93a25",
+     "hex": "#b83924",
      "name": "brown"
     },
     {
-     "hex": "#190b09",
+     "hex": "#1a0d0a",
      "name": "black"
     }
    ],
@@ -709,31 +774,34 @@
   },
   {
    "code": "PIN-000022",
-   "title": "",
+   "title": "Calico Kitty Face",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Pets",
+   "tags": [
+    "cat",
+    "kitty"
+   ],
    "colors": [
     {
-     "hex": "#06090d",
+     "hex": "#05070c",
      "name": "black"
     },
     {
-     "hex": "#88877e",
+     "hex": "#87867d",
      "name": "gray"
     },
     {
-     "hex": "#daa28f",
-     "name": "orange"
-    },
-    {
-     "hex": "#5e5b57",
+     "hex": "#5b5b56",
      "name": "dark gray"
     },
     {
-     "hex": "#a63726",
-     "name": "brown"
+     "hex": "#d39473",
+     "name": "orange"
+    },
+    {
+     "hex": "#e1b4b3",
+     "name": "pink"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -745,26 +813,29 @@
   },
   {
    "code": "PIN-000023",
-   "title": "",
+   "title": "Little Blue Fish",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Sea",
+   "tags": [
+    "fish",
+    "ocean"
+   ],
    "colors": [
     {
      "hex": "#6aace5",
      "name": "light blue"
     },
     {
-     "hex": "#1e2432",
+     "hex": "#1e2331",
      "name": "navy"
     },
     {
-     "hex": "#96948b",
+     "hex": "#95938a",
      "name": "gray"
     },
     {
-     "hex": "#080d14",
+     "hex": "#090e16",
      "name": "black"
     }
    ],
@@ -777,11 +848,14 @@
   },
   {
    "code": "PIN-000024",
-   "title": "",
+   "title": "Highland Cow",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Farm",
+   "tags": [
+    "cow",
+    "highland cow"
+   ],
    "colors": [
     {
      "hex": "#ab524d",
@@ -813,22 +887,26 @@
   },
   {
    "code": "PIN-000025",
-   "title": "",
+   "title": "Fluffy Highland Calf",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Farm",
+   "tags": [
+    "calf",
+    "cow",
+    "highland cow"
+   ],
    "colors": [
     {
-     "hex": "#af603f",
+     "hex": "#ae613e",
      "name": "brown"
     },
     {
-     "hex": "#1b0c0a",
+     "hex": "#1d0d0b",
      "name": "dark red"
     },
     {
-     "hex": "#b58071",
+     "hex": "#b78172",
      "name": "red"
     }
    ],
@@ -841,23 +919,26 @@
   },
   {
    "code": "PIN-000026",
-   "title": "",
+   "title": "Fluffy Spotted Calf",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Farm",
+   "tags": [
+    "calf",
+    "cow"
+   ],
    "colors": [
     {
-     "hex": "#5e3d33",
+     "hex": "#7c6e65",
      "name": "brown"
     },
     {
-     "hex": "#84766e",
-     "name": "orange"
+     "hex": "#10080a",
+     "name": "black"
     },
     {
-     "hex": "#100606",
-     "name": "black"
+     "hex": "#968176",
+     "name": "orange"
     }
    ],
    "page": "pin_page_001.jpeg",
@@ -869,11 +950,14 @@
   },
   {
    "code": "PIN-000027",
-   "title": "",
+   "title": "Resting Highland Cow",
    "description": "",
-   "category": "",
-   "subcategory": "",
-   "tags": [],
+   "category": "Animals",
+   "subcategory": "Farm",
+   "tags": [
+    "cow",
+    "highland cow"
+   ],
    "colors": [
     {
      "hex": "#261015",

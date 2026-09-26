@@ -29,7 +29,7 @@
   {% if filters.q or filters.category or filters.tag or filters.color or filters.source_image_id or filters.status != 'approved' %}<a class="btn" href="/catalog">Clear</a>{% endif %}
 </form>
 
-<p class="muted">{{ pins|length }} pin(s)</p>
+<p class="muted">{{ pins|length }} pin(s) · <a href="/catalog/duplicates">Check for possible duplicates</a></p>
 
 {% if pins %}
 <div class="pin-grid">

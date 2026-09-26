@@ -92,5 +92,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         logger.error("Missing file: %s", exc)
         return JSONResponse({"detail": str(exc)}, status_code=404)
 
+    from app.services.catalog import backfill_fingerprints
+
+    added = backfill_fingerprints(settings)
+    if added:
+        logger.info("Computed fingerprints for %d existing pin(s)", added)
     logger.info("Pin Catalog Builder ready (data folder: %s)", settings.DATA_DIR)
     return app

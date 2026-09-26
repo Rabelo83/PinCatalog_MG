@@ -27,7 +27,7 @@ MAX_OBJECT_AREA = 0.20
 
 # How different a pixel must be from the felt/page colour (LAB Delta-E)
 # to count as "part of a pin". Lower = more sensitive.
-BACKGROUND_DISTANCE_THRESHOLD = 18.0
+BACKGROUND_DISTANCE_THRESHOLD = 11.0
 
 # Pixels darker than this (0-255 lightness) always count as foreground.
 # Enamel pins usually have dark metal outlines.
@@ -79,6 +79,10 @@ JPEG_QUALITY = 95
 # with more of the photo). false = rectangle that follows the pin's shape.
 SQUARE_CROPS = true
 
+# Paint over bits of neighbouring pins that show up in a crop's margin, so
+# each picture shows only one pin. The original photo is never changed.
+CLEAN_CROP_EDGES = true
+
 # Also create a transparent-background PNG when a pin is approved.
 # The normal photo crop is always kept. You can also create a transparent
 # version for a single pin from its detail page.
@@ -94,6 +98,10 @@ SIZE_OUTLIER_FACTOR = 2.5
 
 # Aspect ratio above which a detection is flagged for a closer look.
 FLAG_ASPECT_RATIO = 2.5
+
+# How alike (0-1) a new detection must be to an existing pin to be flagged
+# as "possibly the same pin". Lower = more warnings, higher = fewer.
+SIMILARITY_THRESHOLD = 0.55
 
 [export]
 # Longest side of images in the HTML/GitHub catalog (keeps the website small).

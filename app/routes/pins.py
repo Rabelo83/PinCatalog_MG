@@ -55,5 +55,16 @@ def pin_detail(request: Request, pin_code: str) -> HTMLResponse:
             "source": catalog.get_source(settings, pin.source_image_id),
             "categories": catalog.list_categories(settings),
             "all_tags": catalog.list_tags(settings),
+            "similar": catalog.similar_to_pin(settings, pin.pin_code),
         },
+    )
+
+
+@router.get("/catalog/duplicates", response_class=HTMLResponse)
+def duplicates_page(request: Request) -> HTMLResponse:
+    settings = request.app.state.settings
+    return request.app.state.templates.TemplateResponse(
+        request,
+        "duplicates.html",
+        {"pairs": catalog.possible_duplicate_pairs(settings), "threshold": settings.SIMILARITY_THRESHOLD},
     )

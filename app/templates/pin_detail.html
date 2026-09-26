@@ -21,6 +21,18 @@
       {% for c in pin.colors %}<span class="chip"><span class="swatch" style="background: {{ c.hex }}"></span>{{ c.name }} <span class="muted small">{{ (c.share * 100)|round|int }}%</span></span>{% endfor %}
     </div>
     {% endif %}
+    {% if similar %}
+    <div class="similar">
+      <strong>Looks similar to</strong>
+      {% for other, score in similar %}
+      <div class="similar-item">
+        <a href="/pins/{{ other.pin_code }}"><img src="{{ media_url(other.thumbnail_path) }}" alt=""></a>
+        <div><a href="/pins/{{ other.pin_code }}"><strong>{{ other.pin_code }}</strong></a> {{ other.title }}
+          <div class="small">{{ (score * 100)|round|int }}% alike</div></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
   </div>
 
   <form class="pin-form" id="pin-form">

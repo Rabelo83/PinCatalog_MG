@@ -208,6 +208,14 @@ def run_detection(settings: Settings, source_image_id: int, *, debug: bool | Non
             (utc_now(), total, source_image_id),
         )
     logger.info("%s: %d candidate pins detected", row["filename"], count)
+    try:
+        from app.services.catalog import flag_possible_duplicates
+
+        similar = flag_possible_duplicates(settings, source_image_id)
+        if similar:
+            logger.info("%s: %d candidate(s) look like pins already in the catalog", row["filename"], similar)
+    except Exception:
+        logger.exception("Similarity check failed for %s (detections are kept)", row["filename"])
     return count
 
 

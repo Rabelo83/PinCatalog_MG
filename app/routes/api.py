@@ -110,6 +110,17 @@ def split(request: Request, detection_id: int, body: SplitIn) -> dict[str, Any]:
     return {"detections": [d.as_dict() for d in parts]}
 
 
+@router.get("/detections/{detection_id}/similar")
+def similar_pins(request: Request, detection_id: int) -> list[dict[str, Any]]:
+    return catalog.similar_to_detection(_settings(request), detection_id)
+
+
+@router.post("/detections/{detection_id}/copy-of/{pin_code}")
+def copy_of(request: Request, detection_id: int, pin_code: str) -> dict[str, Any]:
+    detection = catalog.mark_as_copy(_settings(request), detection_id, pin_code)
+    return {"detection": detection.as_dict(), "quantity": catalog.get_pin(_settings(request), pin_code).quantity}
+
+
 @router.post("/detections/merge")
 def merge(request: Request, body: MergeIn) -> dict[str, Any]:
     return {"detection": catalog.merge_detections(_settings(request), body.detection_ids).as_dict()}

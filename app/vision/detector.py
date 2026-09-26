@@ -45,7 +45,7 @@ class DetectorParams:
     max_dimension: int = 1400
     min_object_area: float = 0.0015
     max_object_area: float = 0.20
-    background_distance_threshold: float = 18.0
+    background_distance_threshold: float = 11.0
     dark_pixel_threshold: int = 70
     morph_kernel_size: int = 5
     max_aspect_ratio: float = 4.0
@@ -178,7 +178,7 @@ def build_foreground(normalized: np.ndarray, background: BackgroundModel, params
     combined = fill_holes(combined)
     # Opening removes thin whiskers (threads, slot lines) touching a pin.
     combined = cv2.morphologyEx(combined, cv2.MORPH_OPEN, _kernel(params.morph_kernel_size))
-    combined = separate_touching(combined)
+    combined = separate_touching(combined, gray)
     return ForegroundMaps(
         background=bg_mask, raw_foreground=raw, dark=dark, edges=edges, combined=combined
     )
@@ -204,33 +204,46 @@ def _split_markers(component: np.ndarray, distance: np.ndarray, min_piece_area: 
     return None
 
 
-def _regrow_pieces(markers: np.ndarray, component: np.ndarray, steps: int = 6) -> np.ndarray:
-    """Grow watershed pieces back to the component outline, keeping a gap between them.
+def _regrow_pieces(markers: np.ndarray, component: np.ndarray, steps: int = 12) -> np.ndarray:
+    """Give every pixel of the component back to a watershed piece, keeping a gap between pieces.
 
-    The watershed leaves the thin outer edge and the neck unassigned. Each
-    piece is dilated a few times inside the component; pixels reached by two
-    pieces (the neck) are left empty so the pieces stay separate.
+    The watershed leaves its boundary lines (and sometimes the thin outer edge)
+    unassigned. Unassigned pixels are handed to the nearest piece by growing
+    each piece into unclaimed pixels only, so no part of a pin is lost. Finally
+    a thin cut is made where two different pieces touch.
     """
-    numbers = range(2, int(markers.max()) + 1)
-    grown = {n: (markers == n).astype(np.uint8) for n in numbers}
-    inside = (component > 0).astype(np.uint8)
+    inside = component > 0
+    owner = np.where(inside & (markers >= 2), markers, 0).astype(np.int32)
+    numbers = list(range(2, int(markers.max()) + 1))
     for _ in range(steps):
-        grown = {n: cv2.dilate(m, _kernel(5)) & inside for n, m in grown.items()}
-    stack = np.sum(list(grown.values()), axis=0)
-    owned = [(m > 0) & (stack == 1) for m in grown.values()]
-    # Pixels next to a different piece form the cut line (a few pixels wide).
-    near = np.sum([cv2.dilate(o.astype(np.uint8), _kernel(5)) for o in owned], axis=0)
+        unclaimed = inside & (owner == 0)
+        if not unclaimed.any():
+            break
+        for number in numbers:
+            grown = cv2.dilate((owner == number).astype(np.uint8), _kernel(3)) > 0
+            owner[grown & unclaimed & (owner == 0)] = number
+    near = np.zeros(component.shape, np.uint8)
+    for number in numbers:
+        near += (cv2.dilate((owner == number).astype(np.uint8), _kernel(5)) > 0).astype(np.uint8)
     output = np.zeros(component.shape, np.uint8)
-    output[(stack == 1) & (near == 1)] = 255
+    output[(owner > 0) & (near == 1)] = 255
     return output
 
 
-def separate_touching(mask: np.ndarray, split_factor: float = 1.15) -> np.ndarray:
+def separate_touching(
+    mask: np.ndarray, gray: np.ndarray | None = None, split_factor: float = 1.15, outline_weight: float = 0.6
+) -> np.ndarray:
     """Cut apart pins that touch each other.
 
     Only components clearly larger than the typical component on the page are
     considered, so single pins with narrow parts (butterfly bodies, legs) are
     left alone. Each piece produced by the watershed must itself be pin-sized.
+
+    Args:
+        gray: Grayscale image. When given, the cut prefers to follow dark
+            lines (the metal outlines where two pins meet) instead of simply
+            the narrowest part of the shape, which could be a pin's own neck.
+        outline_weight: How strongly dark lines attract the cut (0..1).
     """
     count, labels, stats, _ = cv2.connectedComponentsWithStats(mask)
     areas = stats[1:, cv2.CC_STAT_AREA]
@@ -243,7 +256,11 @@ def separate_touching(mask: np.ndarray, split_factor: float = 1.15) -> np.ndarra
     result = mask.copy()
     # Flood the inverted distance map, so watershed lines follow the thin
     # necks between pins rather than the drawing inside each pin.
-    relief = 255 - cv2.normalize(distance, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+    relief = 255 - cv2.normalize(distance, None, 0, 255, cv2.NORM_MINMAX).astype(np.float32)
+    if gray is not None:
+        darkness = 255 - cv2.GaussianBlur(gray, (5, 5), 0).astype(np.float32)
+        relief = (1 - outline_weight) * relief + outline_weight * darkness
+    relief = np.clip(relief, 0, 255).astype(np.uint8)
     relief_bgr = cv2.cvtColor(relief, cv2.COLOR_GRAY2BGR)
     for label in range(1, count):
         if stats[label, cv2.CC_STAT_AREA] < split_factor * median_area:
@@ -294,6 +311,8 @@ def rejection_reason(candidate: Candidate, params: DetectorParams) -> str | None
         return "irregular / thin outline"
     if f.border_distance <= 1 and f.colorfulness < params.min_colorfulness * 2:
         return "touches photo edge (table, rings, page edge)"
+    if f.border_contact > 0.25:
+        return "runs along the photo edge (table / background)"
     if f.foreground_ratio < params.min_foreground_ratio and f.colorfulness < params.min_colorfulness * 2:
         return "empty slot (mostly background inside)"
     if f.colorfulness < params.min_colorfulness and f.hue_diversity < 0.1 and f.dark_ratio < 0.15:

@@ -29,9 +29,10 @@ from app.models import Detection, Pin, SourceImage
 from app.schemas import PinUpdateIn
 from app.vision import quality
 from app.vision.colors import dominant_colors
-from app.vision.cropper import crop_image, padded_box, save_crop_and_thumbnail
+from app.vision.cropper import clean_neighbors, crop_image, padded_box, save_crop_and_thumbnail
 from app.vision.detector import DetectorParams, split_region
 from app.vision.segmentation import remove_background
+from app.vision.similarity import Fingerprint, fingerprint, similarity
 from app.vision.utils import Box, load_image, save_png
 
 logger = logging.getLogger(__name__)
@@ -74,15 +75,25 @@ class PinImages:
     colors: list[dict[str, Any]]
     width_px: int
     height_px: int
+    fingerprint: dict[str, Any]
+
+
+def make_crop(settings: Settings, image: np.ndarray, box: Box) -> np.ndarray:
+    """Padded crop of one pin from the full-resolution image (neighbours cleaned if enabled)."""
+    height, width = image.shape[:2]
+    padded = padded_box(box, width, height, settings.PADDING_PERCENT, settings.SQUARE_CROPS)
+    crop = crop_image(image, padded)
+    if settings.CLEAN_CROP_EDGES:
+        own = Box(box.x - padded.x, box.y - padded.y, box.width, box.height)
+        crop = clean_neighbors(crop, own, settings.BACKGROUND_DISTANCE_THRESHOLD, settings.DARK_PIXEL_THRESHOLD)
+    return crop
 
 
 def render_pin_images(
     settings: Settings, image: np.ndarray, box: Box, pin_code: str, *, transparent: bool | None = None
 ) -> PinImages:
     """Create crop, thumbnail and (optionally) transparent PNG for one pin."""
-    height, width = image.shape[:2]
-    padded = padded_box(box, width, height, settings.PADDING_PERCENT, settings.SQUARE_CROPS)
-    crop = crop_image(image, padded)
+    crop = make_crop(settings, image, box)
     paths = pin_file_paths(settings, pin_code)
     save_crop_and_thumbnail(crop, paths["crop"], paths["thumbnail"], settings.THUMBNAIL_SIZE, settings.JPEG_QUALITY)
 
@@ -101,6 +112,7 @@ def render_pin_images(
         colors=dominant_colors(crop),
         width_px=box.width,
         height_px=box.height,
+        fingerprint=fingerprint(crop).as_dict(),
     )
 
 
@@ -108,9 +120,7 @@ def preview_crop(settings: Settings, detection_id: int) -> np.ndarray:
     """Padded crop for a detection, generated on the fly (review screen)."""
     detection = get_detection(settings, detection_id)
     source = get_source(settings, detection.source_image_id)
-    image = load_source_image(settings, source)
-    padded = padded_box(detection.box, source.width, source.height, settings.PADDING_PERCENT, settings.SQUARE_CROPS)
-    return crop_image(image, padded)
+    return make_crop(settings, load_source_image(settings, source), detection.box)
 
 
 # ----------------------------------------------------------------- queries
@@ -291,6 +301,7 @@ def _refresh_pin_images(settings: Settings, conn: sqlite3.Connection, pin_code: 
         (images.crop_path, images.thumbnail_path, images.transparent_path, json.dumps(images.colors),
          images.width_px, images.height_px, utc_now(), pin_code),
     )
+    conn.execute("UPDATE pins SET fingerprint = ? WHERE pin_code = ?", (json.dumps(images.fingerprint), pin_code))
 
 
 def approve_detection(settings: Settings, detection_id: int) -> Pin:
@@ -324,6 +335,7 @@ def approve_detection(settings: Settings, detection_id: int) -> Pin:
                     (pin_code, detection_id, source.id, images.crop_path, images.transparent_path,
                      images.thumbnail_path, json.dumps(images.colors), images.width_px, images.height_px, now, now),
                 )
+            conn.execute("UPDATE pins SET fingerprint = ? WHERE pin_code = ?", (json.dumps(images.fingerprint), pin_code))
             conn.execute("UPDATE detections SET status = 'approved', updated_at = ? WHERE id = ?", (now, detection_id))
     except Exception:
         # The transaction rolled back; remove files of a pin that does not exist.
@@ -379,6 +391,11 @@ def reset_detection(settings: Settings, detection_id: int) -> Detection:
         raise ReviewError("This detection was merged or split.")
     with transaction(settings.db_path) as conn:
         _retire_pin_files(settings, conn, detection_id)
+        copy_of = detection.features.get("copy_of")
+        if copy_of:
+            conn.execute("UPDATE pins SET quantity = MAX(0, quantity - 1), updated_at = ? WHERE pin_code = ?", (utc_now(), copy_of))
+            features = {k: v for k, v in detection.features.items() if k != "copy_of"}
+            conn.execute("UPDATE detections SET features = ? WHERE id = ?", (json.dumps(features), detection_id))
         conn.execute("UPDATE detections SET status = 'pending', updated_at = ? WHERE id = ?", (utc_now(), detection_id))
     return get_detection(settings, detection_id)
 
@@ -629,3 +646,122 @@ def set_page_label(settings: Settings, source_id: int, label: str) -> None:
     """Give a photo a friendly name, e.g. "Binder 1 - page 3"."""
     with transaction(settings.db_path) as conn:
         conn.execute("UPDATE source_images SET page_label = ? WHERE id = ?", (label.strip() or None, source_id))
+
+
+# -------------------------------------------------------------- similarity
+def _pin_fingerprints(conn: sqlite3.Connection, exclude_pin_code: str | None = None) -> list[tuple[str, Fingerprint]]:
+    rows = conn.execute(
+        "SELECT pin_code, fingerprint FROM pins WHERE status = 'approved' AND fingerprint != '{}' AND pin_code != ?",
+        (exclude_pin_code or "",),
+    ).fetchall()
+    return [(r["pin_code"], Fingerprint.from_dict(json.loads(r["fingerprint"]))) for r in rows]
+
+
+def rank_similar(
+    settings: Settings, target: Fingerprint, *, exclude_pin_code: str | None = None, limit: int = 3, threshold: float | None = None
+) -> list[tuple[str, float]]:
+    """Existing pins that look like ``target``, best first, above the threshold."""
+    threshold = settings.SIMILARITY_THRESHOLD if threshold is None else threshold
+    with open_db(settings.db_path) as conn:
+        candidates = _pin_fingerprints(conn, exclude_pin_code)
+    scored = sorted(((code, similarity(target, fp)) for code, fp in candidates), key=lambda item: -item[1])
+    return [(code, round(score, 3)) for code, score in scored[:limit] if score >= threshold]
+
+
+def similar_to_detection(settings: Settings, detection_id: int) -> list[dict[str, Any]]:
+    """Approved pins that look like this detection (for the review screen)."""
+    detection = get_detection(settings, detection_id)
+    target = fingerprint(preview_crop(settings, detection_id))
+    matches = rank_similar(settings, target, exclude_pin_code=detection.pin_code)
+    results = []
+    for code, score in matches:
+        pin = get_pin(settings, code)
+        results.append({"pin_code": code, "score": score, "title": pin.title, "thumbnail_path": pin.thumbnail_path, "quantity": pin.quantity})
+    return results
+
+
+def similar_to_pin(settings: Settings, pin_code: str) -> list[tuple[Pin, float]]:
+    """Other approved pins that look like this one (pin detail page)."""
+    with open_db(settings.db_path) as conn:
+        row = conn.execute("SELECT fingerprint FROM pins WHERE pin_code = ?", (pin_code,)).fetchone()
+    if row is None or row["fingerprint"] in ("", "{}"):
+        return []
+    target = Fingerprint.from_dict(json.loads(row["fingerprint"]))
+    return [(get_pin(settings, code), score) for code, score in rank_similar(settings, target, exclude_pin_code=pin_code)]
+
+
+def possible_duplicate_pairs(settings: Settings) -> list[tuple[Pin, Pin, float]]:
+    """Every pair of approved pins that look alike, most alike first."""
+    with open_db(settings.db_path) as conn:
+        prints = _pin_fingerprints(conn)
+    pairs: list[tuple[str, str, float]] = []
+    for i, (code_a, fp_a) in enumerate(prints):
+        for code_b, fp_b in prints[i + 1 :]:
+            score = similarity(fp_a, fp_b)
+            if score >= settings.SIMILARITY_THRESHOLD:
+                pairs.append((code_a, code_b, round(score, 3)))
+    pairs.sort(key=lambda item: -item[2])
+    return [(get_pin(settings, a), get_pin(settings, b), score) for a, b, score in pairs]
+
+
+def mark_as_copy(settings: Settings, detection_id: int, pin_code: str) -> Detection:
+    """This detection is another copy of an existing pin: add 1 to its quantity.
+
+    The detection is set to rejected (it does not become a separate pin) and
+    remembers which pin it was counted towards, so "Undo" can reverse it.
+    """
+    detection = get_detection(settings, detection_id)
+    if detection.status != "pending":
+        raise ReviewError("Only boxes waiting for review can be counted as a copy.")
+    target = get_pin(settings, pin_code)
+    if target.status != "approved":
+        raise ReviewError(f"{pin_code} is not in the catalog.")
+    features = dict(detection.features, copy_of=pin_code)
+    now = utc_now()
+    with transaction(settings.db_path) as conn:
+        conn.execute("UPDATE pins SET quantity = quantity + 1, updated_at = ? WHERE pin_code = ?", (now, pin_code))
+        conn.execute(
+            "UPDATE detections SET status = 'rejected', features = ?, updated_at = ? WHERE id = ?",
+            (json.dumps(features), now, detection_id),
+        )
+    logger.info("Detection #%d counted as another copy of %s", detection_id, pin_code)
+    return get_detection(settings, detection_id)
+
+
+def flag_possible_duplicates(settings: Settings, source_id: int) -> int:
+    """Mark pending detections on a photo that look like existing pins. Returns how many."""
+    source = get_source(settings, source_id)
+    with open_db(settings.db_path) as conn:
+        if not _pin_fingerprints(conn):
+            return 0
+    image = load_source_image(settings, source)
+    flagged = 0
+    for detection in list_detections(settings, source_id):
+        if detection.status != "pending":
+            continue
+        matches = rank_similar(settings, fingerprint(make_crop(settings, image, detection.box)), limit=1)
+        if not matches:
+            continue
+        code, score = matches[0]
+        flags = sorted(set(detection.flags) | {"possible_duplicate"})
+        features = dict(detection.features, similar_to=code, similarity=score)
+        with transaction(settings.db_path) as conn:
+            conn.execute("UPDATE detections SET flags = ?, features = ? WHERE id = ?", (json.dumps(flags), json.dumps(features), detection.id))
+        flagged += 1
+    return flagged
+
+
+def backfill_fingerprints(settings: Settings) -> int:
+    """Compute fingerprints for pins approved before this feature existed."""
+    with open_db(settings.db_path) as conn:
+        rows = conn.execute("SELECT pin_code, crop_path FROM pins WHERE fingerprint = '{}' AND status = 'approved'").fetchall()
+    done = 0
+    for row in rows:
+        path = settings.resolve_data_path(row["crop_path"])
+        if path is None or not path.exists():
+            continue
+        fp = fingerprint(load_image(path))
+        with transaction(settings.db_path) as conn:
+            conn.execute("UPDATE pins SET fingerprint = ? WHERE pin_code = ?", (json.dumps(fp.as_dict()), row["pin_code"]))
+        done += 1
+    return done

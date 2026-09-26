@@ -143,7 +143,43 @@
     $("approve").disabled = d.status === "approved";
     $("reject").disabled = d.status === "rejected";
     $("reset").disabled = d.status === "pending";
+    loadSimilar(d);
   }
+
+  var similarFor = null;
+  async function loadSimilar(d) {
+    var box = $("similar");
+    if (d.status !== "pending") { box.hidden = true; similarFor = null; return; }
+    var key = d.id + ":" + d.x + "," + d.y + "," + d.width + "," + d.height;
+    if (similarFor === key) return;
+    similarFor = key;
+    box.hidden = true;
+    try {
+      var matches = await Api.get("/api/detections/" + d.id + "/similar");
+      if (similarFor !== key || !matches.length) return;
+      $("similar-list").innerHTML = matches.map(function (m) {
+        return '<div class="similar-item">' +
+          '<a href="/pins/' + m.pin_code + '" target="_blank"><img src="/media/' + m.thumbnail_path + '" alt=""></a>' +
+          '<div><div><strong>' + m.pin_code + "</strong> " + (m.title ? escapeHtml(m.title) : "") + "</div>" +
+          '<div class="muted small">' + Math.round(m.score * 100) + "% alike · you have " + m.quantity + "</div>" +
+          '<button class="btn small" data-copy="' + m.pin_code + '">Same pin: +1 to ' + m.pin_code + "</button></div></div>";
+      }).join("");
+      box.hidden = false;
+    } catch (err) { /* similarity is optional; ignore */ }
+  }
+  function escapeHtml(t) { return String(t).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  $("similar-list").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-copy]"); if (!b) return;
+    var d = byId(selectedId); if (!d) return;
+    var code = b.getAttribute("data-copy");
+    act(async function () {
+      var res = await Api.post("/api/detections/" + d.id + "/copy-of/" + code);
+      replace(res.detection);
+      Toast.show(code + " now has quantity " + res.quantity);
+      step(1, true); draw(); showPanel();
+    });
+  });
 
   function select(id, opts) {
     opts = opts || {};

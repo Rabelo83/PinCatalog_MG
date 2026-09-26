@@ -102,6 +102,8 @@ CREATE TABLE IF NOT EXISTS pins (
     -- Suggestions from a future AI step are stored here, never written over
     -- the user's own fields. JSON object, e.g. {"title": "...", "model": "..."}.
     ai_suggestions    TEXT NOT NULL DEFAULT '{}',
+    -- Visual fingerprint used to spot the same pin photographed twice.
+    fingerprint       TEXT NOT NULL DEFAULT '{}',
     status            TEXT NOT NULL DEFAULT 'approved'
                       CHECK (status IN ('approved', 'rejected')),
     created_at        TEXT NOT NULL,
@@ -163,6 +165,14 @@ def transaction(db_path: Path) -> Iterator[sqlite3.Connection]:
         conn.close()
 
 
+def _migrate(conn: sqlite3.Connection) -> None:
+    """Add columns introduced after a database was first created."""
+    columns = {row["name"] for row in conn.execute("PRAGMA table_info(pins)")}
+    if "fingerprint" not in columns:
+        conn.execute("ALTER TABLE pins ADD COLUMN fingerprint TEXT NOT NULL DEFAULT '{}'")
+        logger.info("Database upgraded: added pins.fingerprint")
+
+
 def init_db(db_path: Path) -> None:
     """Create the database file and all tables if they do not exist."""
     db_path.parent.mkdir(parents=True, exist_ok=True)
@@ -170,6 +180,7 @@ def init_db(db_path: Path) -> None:
     try:
         conn.execute("PRAGMA journal_mode = WAL")
         conn.executescript(SCHEMA_SQL)
+        _migrate(conn)
         conn.execute(
             "INSERT OR IGNORE INTO schema_info(key, value) VALUES ('version', ?)",
             (str(SCHEMA_VERSION),),

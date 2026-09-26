@@ -37,7 +37,7 @@ class Settings:
     DETECTION_MAX_DIMENSION: int = 1400
     MIN_OBJECT_AREA: float = 0.0015
     MAX_OBJECT_AREA: float = 0.20
-    BACKGROUND_DISTANCE_THRESHOLD: float = 18.0
+    BACKGROUND_DISTANCE_THRESHOLD: float = 11.0
     DARK_PIXEL_THRESHOLD: int = 70
     MORPH_KERNEL_SIZE: int = 5
     MAX_ASPECT_RATIO: float = 4.0
@@ -55,6 +55,7 @@ class Settings:
     THUMBNAIL_SIZE: int = 400
     JPEG_QUALITY: int = 95
     SQUARE_CROPS: bool = True
+    CLEAN_CROP_EDGES: bool = True
     GENERATE_TRANSPARENT: bool = False
     TRANSPARENT_FEATHER: int = 2
     DISPLAY_MAX_DIMENSION: int = 2400
@@ -62,6 +63,7 @@ class Settings:
     # quality
     SIZE_OUTLIER_FACTOR: float = 2.5
     FLAG_ASPECT_RATIO: float = 2.5
+    SIMILARITY_THRESHOLD: float = 0.55
 
     # export
     EXPORT_IMAGE_MAX_DIMENSION: int = 1200

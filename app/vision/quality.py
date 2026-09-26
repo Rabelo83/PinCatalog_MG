@@ -26,6 +26,7 @@ FLAG_DESCRIPTIONS: dict[str, str] = {
     "mostly_background": "Mostly background colour - may be an empty slot or shadow.",
     "extreme_aspect": "Very long and thin shape.",
     "low_confidence": "The detector was not sure about this one.",
+    "possible_duplicate": "Looks like a pin that is already in the catalog.",
 }
 
 
@@ -45,6 +46,7 @@ class RegionFeatures:
     texture: float
     hue_diversity: float
     border_distance: float
+    border_contact: float = 0.0
 
     def as_dict(self) -> dict[str, float]:
         return {k: round(float(v), 4) for k, v in asdict(self).items()}
@@ -73,6 +75,21 @@ def hue_diversity(pixels_hsv: np.ndarray, min_saturation: int = 60) -> float:
     hist, _ = np.histogram(saturated[:, 0], bins=12, range=(0, 180))
     present = hist > max(5, 0.02 * len(saturated))
     return float(present.sum() / 12.0)
+
+
+def border_contact(region_mask: np.ndarray, x: int, y: int, w: int, h: int, margin: int = 2) -> float:
+    """Length of the region lying along the photo edge, relative to its size.
+
+    0 = does not touch the edge. Pins photographed with a margin never run
+    along the edge; a table, wall or binder visible at the edge does.
+    """
+    height, width = region_mask.shape
+    touching = 0
+    touching += int((region_mask[:margin, x : x + w] > 0).any(axis=0).sum())
+    touching += int((region_mask[height - margin :, x : x + w] > 0).any(axis=0).sum())
+    touching += int((region_mask[y : y + h, :margin] > 0).any(axis=1).sum())
+    touching += int((region_mask[y : y + h, width - margin :] > 0).any(axis=1).sum())
+    return touching / float(max(w, h, 1))
 
 
 def region_features(
@@ -118,6 +135,7 @@ def region_features(
         texture=float(laplacian.std()) if laplacian.size else 0.0,
         hue_diversity=hue_diversity(hsv),
         border_distance=float(min(x, y, width - (x + w), height - (y + h))),
+        border_contact=border_contact(region_mask, x, y, w, h),
     )
 
 

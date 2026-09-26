@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Possible duplicates · Pin Catalog Builder{% endblock %}
+{% block content %}
+<p class="crumbs"><a href="/catalog">← Catalog</a></p>
+<h1>Possible duplicates</h1>
+<p class="muted">Pins in the catalog that look alike (at least {{ (threshold * 100)|round|int }}% similar).
+If two are really the same pin, keep one and raise its quantity; open the other in review and reject it.</p>
+{% if pairs %}
+  {% for a, b, score in pairs %}
+  <div class="dup-pair">
+    {% for pin in (a, b) %}
+      {% if loop.index == 2 %}<div class="score">{{ (score * 100)|round|int }}%<div class="muted small">alike</div></div>{% endif %}
+      <a class="pin-card" href="/pins/{{ pin.pin_code }}">
+        <img loading="lazy" src="{{ media_url(pin.thumbnail_path) }}" alt="{{ pin.title or pin.pin_code }}">
+        <div class="meta"><div class="code">{{ pin.pin_code }}</div><div class="title">{{ pin.title or 'Untitled' }}</div>
+        <div class="sub">qty {{ pin.quantity }} · {{ pin.source_page_label or pin.source_filename }}</div></div>
+      </a>
+    {% endfor %}
+  </div>
+  {% endfor %}
+{% else %}
+  <p class="empty">No look-alike pins found. 🎉</p>
+{% endif %}
+{% endblock %}
