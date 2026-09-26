@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · Pin Catalog Builder{% endblock %}
+{% block content %}
+<h1>Dashboard</h1>
+
+<section class="stats">
+  <div class="stat"><span class="num">{{ stats.source_photos }}</span><span class="label">Source photos</span></div>
+  <div class="stat {% if stats.pending %}highlight{% endif %}"><span class="num">{{ stats.pending }}</span><span class="label">Waiting for review</span></div>
+  <div class="stat"><span class="num">{{ stats.approved }}</span><span class="label">Approved pins</span></div>
+  <div class="stat"><span class="num">{{ stats.rejected }}</span><span class="label">Rejected detections</span></div>
+  <div class="stat"><span class="num">{{ stats.catalog_items }}</span><span class="label">Catalog items ({{ stats.total_quantity }} total qty)</span></div>
+  <div class="stat"><span class="num small">{{ stats.last_import[:16].replace('T', ' ') if stats.last_import else '—' }}</span><span class="label">Last import (UTC)</span></div>
+</section>
+
+<section class="actions">
+  <button id="process-btn" class="btn primary">Process New Images</button>
+  <a class="btn" href="/review">Review Detections</a>
+  <a class="btn" href="/catalog">Browse Catalog</a>
+  <button id="export-btn" class="btn">Export Catalog</button>
+</section>
+
+<section class="panel">
+  <h2>New photos</h2>
+  <p class="muted">Put photos in: <code>{{ input_dir }}</code></p>
+  {% if waiting_files %}
+    <p><strong>{{ waiting_files|length }}</strong> photo(s) waiting: {{ waiting_files[:8]|join(', ') }}{% if waiting_files|length > 8 %}, …{% endif %}</p>
+  {% else %}
+    <p class="muted">No new photos waiting.</p>
+  {% endif %}
+  <div id="process-status" class="process-status" {% if not processing.running %}hidden{% endif %}></div>
+  <ul id="process-results" class="results"></ul>
+</section>
+
+<section class="panel" id="export-panel" hidden>
+  <h2>Export</h2>
+  <div id="export-status"></div>
+</section>
+
+<section class="panel">
+  <h2>Photos</h2>
+  {% if sources %}
+  <div class="table-wrap">
+  <table class="table">
+    <thead><tr><th>#</th><th>Photo</th><th>Imported</th><th>Status</th><th>Pending</th><th>Approved</th><th>Rejected</th><th></th></tr></thead>
+    <tbody>
+    {% for s in sources %}
+      <tr>
+        <td>{{ s.id }}</td>
+        <td>{{ s.page_label or s.filename }}{% if s.page_label %}<div class="muted small">{{ s.filename }}</div>{% endif %}</td>
+        <td class="small">{{ s.imported_at[:16].replace('T', ' ') }}</td>
+        <td><span class="badge status-{{ s.status }}" {% if s.error_message %}title="{{ s.error_message }}"{% endif %}>{{ s.status }}</span></td>
+        <td>{{ s.pending_count }}</td>
+        <td>{{ s.approved_count }}</td>
+        <td>{{ s.rejected_count }}</td>
+        <td><a href="/review/{{ s.id }}">Review →</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+  {% else %}
+  <p class="muted">No photos imported yet. Copy photos into the folder above and click <em>Process New Images</em>.</p>
+  {% endif %}
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+window.PAGES_DIR = {{ (pages_dir|string if pages_dir else '')|tojson }};
+window.PROCESSING_RUNNING = {{ processing.running|tojson }};
+</script>
+<script src="/static/js/dashboard.js"></script>
+{% endblock %}

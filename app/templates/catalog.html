@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Catalog · Pin Catalog Builder{% endblock %}
+{% block content %}
+<h1>Catalog</h1>
+<form class="filters" method="get" action="/catalog">
+  <input type="search" name="q" value="{{ filters.q }}" placeholder="Search PIN ID, title, tag, notes…" aria-label="Search">
+  <select name="category" aria-label="Category">
+    <option value="">All categories</option>
+    {% for c in categories %}<option {% if c == filters.category %}selected{% endif %}>{{ c }}</option>{% endfor %}
+  </select>
+  <select name="tag" aria-label="Tag">
+    <option value="">All tags</option>
+    {% for t in tags %}<option {% if t == filters.tag %}selected{% endif %}>{{ t }}</option>{% endfor %}
+  </select>
+  <select name="color" aria-label="Colour">
+    <option value="">All colours</option>
+    {% for c in colors %}<option {% if c == filters.color %}selected{% endif %}>{{ c }}</option>{% endfor %}
+  </select>
+  <select name="source" aria-label="Source photo">
+    <option value="">All photos</option>
+    {% for s in sources %}<option value="{{ s.id }}" {% if s.id == filters.source_image_id %}selected{% endif %}>#{{ s.id }} {{ s.page_label or s.filename }}</option>{% endfor %}
+  </select>
+  <select name="status" aria-label="Status">
+    <option value="approved" {% if filters.status == 'approved' %}selected{% endif %}>Approved</option>
+    <option value="rejected" {% if filters.status == 'rejected' %}selected{% endif %}>Rejected</option>
+    <option value="all" {% if filters.status == 'all' %}selected{% endif %}>All</option>
+  </select>
+  <button class="btn primary" type="submit">Search</button>
+  {% if filters.q or filters.category or filters.tag or filters.color or filters.source_image_id or filters.status != 'approved' %}<a class="btn" href="/catalog">Clear</a>{% endif %}
+</form>
+
+<p class="muted">{{ pins|length }} pin(s)</p>
+
+{% if pins %}
+<div class="pin-grid">
+  {% for pin in pins %}
+  <a class="pin-card {% if pin.status == 'rejected' %}is-rejected{% endif %}" href="/pins/{{ pin.pin_code }}">
+    <img loading="lazy" src="{{ media_url(pin.thumbnail_path) }}" alt="{{ pin.title or pin.pin_code }}">
+    <div class="meta">
+      <div class="code">{{ pin.pin_code }}{% if pin.status == 'rejected' %} · rejected{% endif %}</div>
+      <div class="title">{{ pin.title or 'Untitled' }}</div>
+      <div class="sub">{{ pin.category or '—' }} · qty {{ pin.quantity }}</div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% else %}
+<p class="empty">No pins found. Approve detections on the <a href="/review">Review</a> page to add pins to the catalog.</p>
+{% endif %}
+{% endblock %}

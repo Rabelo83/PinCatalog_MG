@@ -1,0 +1,116 @@
+# ---------------------------------------------------------------------------
+# Pin Catalog Builder - settings
+#
+# Edit the values below to tune the application. You never need to change any
+# Python code to adjust detection. Restart the app after editing this file.
+# Any setting you delete falls back to its built-in default.
+# ---------------------------------------------------------------------------
+
+[paths]
+# Folder holding all photos, crops and the catalog database.
+# Relative paths are relative to this file's folder.
+DATA_DIR = "data"
+
+# Folder that the HTML catalog export is copied to for GitHub Pages.
+# In your GitHub repository settings choose: Pages -> Deploy from a branch ->
+# main -> /docs. Set to "" to disable publishing a copy.
+GITHUB_PAGES_DIR = "docs"
+
+[detection]
+# Photos are shrunk to this size (longest side, pixels) while detecting.
+# Crops are ALWAYS cut from the full-resolution original.
+DETECTION_MAX_DIMENSION = 1400
+
+# Smallest / largest object, as a fraction of the page area (0.001 = 0.1%).
+MIN_OBJECT_AREA = 0.0015
+MAX_OBJECT_AREA = 0.20
+
+# How different a pixel must be from the felt/page colour (LAB Delta-E)
+# to count as "part of a pin". Lower = more sensitive.
+BACKGROUND_DISTANCE_THRESHOLD = 18.0
+
+# Pixels darker than this (0-255 lightness) always count as foreground.
+# Enamel pins usually have dark metal outlines.
+DARK_PIXEL_THRESHOLD = 70
+
+# Size (pixels, at detection scale) of the shape-cleanup brush.
+MORPH_KERNEL_SIZE = 5
+
+# Largest allowed width:height (or height:width) ratio for a pin.
+MAX_ASPECT_RATIO = 4.0
+
+# Minimum solidity (object area / convex hull area). Thin outlines score low.
+MIN_SOLIDITY = 0.45
+
+# Minimum share of an object's area that is clearly "not background".
+# Empty mounting slots are mostly background colour inside.
+MIN_FOREGROUND_RATIO = 0.35
+
+# Minimum colourfulness score. Empty grey slots / metal rings score low.
+MIN_COLORFULNESS = 12.0
+
+# Minimum amount of fine detail. Smooth grey areas (shadows, page edges)
+# below both MIN_COLORFULNESS and MIN_TEXTURE are ignored.
+MIN_TEXTURE = 15.0
+
+# Detections scoring below this confidence (0-1) are discarded.
+MIN_CONFIDENCE = 0.30
+
+# Two boxes overlapping more than this (intersection over union) are merged.
+DUPLICATE_IOU_THRESHOLD = 0.45
+
+# A box more than this fraction inside another box is treated as a duplicate.
+CONTAINMENT_THRESHOLD = 0.85
+
+# Save intermediate images to data/debug/ for every processed photo.
+DEBUG_MODE = false
+
+[crops]
+# Padding around each pin as a percentage of its longest side.
+PADDING_PERCENT = 10.0
+
+# Longest side of catalog thumbnails, in pixels.
+THUMBNAIL_SIZE = 400
+
+# JPEG quality for crops and thumbnails (1-100).
+JPEG_QUALITY = 95
+
+# Make every crop a square with the pin centred (the shorter side is padded
+# with more of the photo). false = rectangle that follows the pin's shape.
+SQUARE_CROPS = true
+
+# Also create a transparent-background PNG when a pin is approved.
+# The normal photo crop is always kept. You can also create a transparent
+# version for a single pin from its detail page.
+GENERATE_TRANSPARENT = false
+
+# Softness of transparent edges, in pixels.
+TRANSPARENT_FEATHER = 2
+
+[quality]
+# A pin is "unusually small/large" compared with the typical pin on the
+# same page by this factor.
+SIZE_OUTLIER_FACTOR = 2.5
+
+# Aspect ratio above which a detection is flagged for a closer look.
+FLAG_ASPECT_RATIO = 2.5
+
+[export]
+# Longest side of images in the HTML/GitHub catalog (keeps the website small).
+EXPORT_IMAGE_MAX_DIMENSION = 1200
+
+# What the public HTML catalog shows. Purchase price and notes are private by
+# default because the HTML catalog may be published on the internet.
+HTML_INCLUDE_SELLING_PRICE = true
+HTML_INCLUDE_PURCHASE_PRICE = false
+HTML_INCLUDE_NOTES = false
+HTML_INCLUDE_QUANTITY = true
+
+# Title and subtitle shown at the top of the HTML catalog (website).
+CATALOG_TITLE = "Mairelys Personal Collection"
+CATALOG_SUBTITLE = "A little collection of happy pins"
+
+[server]
+HOST = "127.0.0.1"
+PORT = 8000
+OPEN_BROWSER = true

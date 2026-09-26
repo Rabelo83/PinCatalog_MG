@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mairelys Personal Collection</title>
+<meta name="description" content="A little collection of happy pins">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='42' r='30' fill='%23f07a9c'/><circle cx='40' cy='34' r='9' fill='%23ffd3df'/><rect x='46' y='68' width='8' height='26' rx='4' fill='%239a8cd8'/></svg>">
+<style>
+:root {
+  --paper: #fff8f0;
+  --dot: #f6e3d6;
+  --card: #ffffff;
+  --ink: #3d2f3a;
+  --soft: #8a7684;
+  --line: #f0e2d8;
+  --rose: #f07a9c;
+  --lavender: #9a8cd8;
+  --mint: #58c3a5;
+  --sun: #ffc24b;
+  --sky: #6db6ec;
+  --peach: #ff9f7a;
+  --shadow: 0 6px 18px rgba(120, 70, 90, .12);
+  --shadow-lift: 0 14px 30px rgba(120, 70, 90, .20);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #231b24; --dot: #2e2430; --card: #2f2531; --ink: #f7ecf2; --soft: #c2adbb; --line: #3f3342;
+    --shadow: 0 6px 18px rgba(0, 0, 0, .35); --shadow-lift: 0 14px 30px rgba(0, 0, 0, .45);
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #231b24; --dot: #2e2430; --card: #2f2531; --ink: #f7ecf2; --soft: #c2adbb; --line: #3f3342;
+  --shadow: 0 6px 18px rgba(0, 0, 0, .35); --shadow-lift: 0 14px 30px rgba(0, 0, 0, .45);
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; color: var(--ink);
+  font-family: "Nunito", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--paper);
+  background-image: radial-gradient(var(--dot) 1.6px, transparent 1.7px);
+  background-size: 22px 22px;
+}
+h1, h2, .fun { font-family: "Fredoka", "Nunito", system-ui, sans-serif; }
+
+/* ---------- header ---------- */
+header { position: relative; text-align: center; padding: 44px 16px 18px; overflow: hidden; }
+.confetti { position: absolute; inset: 0; pointer-events: none; opacity: .9; }
+.confetti span { position: absolute; border-radius: 50%; }
+header h1 { position: relative; margin: 0; font-size: clamp(2rem, 6vw, 3.4rem); font-weight: 700; line-height: 1.05; letter-spacing: -.01em; }
+header h1 .word:nth-child(3n+1) { color: var(--rose); }
+header h1 .word:nth-child(3n+2) { color: var(--lavender); }
+header h1 .word:nth-child(3n) { color: var(--mint); }
+header .tagline { position: relative; margin: 10px 0 0; color: var(--soft); font-size: 1.05rem; }
+.counter { position: relative; display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; background: var(--card); border: 2px dashed var(--line); border-radius: 999px; padding: 6px 16px; font-weight: 700; font-size: .95rem; }
+.counter b { color: var(--rose); font-family: "Fredoka", sans-serif; font-size: 1.15rem; }
+
+/* ---------- filters ---------- */
+.controls { position: sticky; top: 0; z-index: 5; padding: 12px 16px; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 2px dotted var(--line); }
+.controls-inner { max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.search { position: relative; flex: 1 1 260px; max-width: 440px; }
+.search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--soft); }
+.controls input, .controls select {
+  font: inherit; font-weight: 600; width: 100%; padding: 10px 16px; border: 2px solid var(--line); border-radius: 999px;
+  background: var(--card); color: var(--ink); min-width: 0; appearance: none; -webkit-appearance: none;
+}
+.controls input { padding-left: 40px; }
+.controls select { width: auto; flex: 0 1 auto; padding-right: 34px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23f07a9c' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+.controls input:focus, .controls select:focus { outline: none; border-color: var(--rose); box-shadow: 0 0 0 4px color-mix(in srgb, var(--rose) 20%, transparent); }
+.chips-row { max-width: 1100px; margin: 10px auto 0; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.chip-btn { font: inherit; font-weight: 700; font-size: .85rem; border: 0; border-radius: 999px; padding: 5px 14px; cursor: pointer; background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 2px var(--line); }
+.chip-btn.on { background: var(--rose); color: #fff; box-shadow: none; }
+
+/* ---------- grid of pinned cards ---------- */
+main { max-width: 1180px; margin: 0 auto; padding: 22px 16px 10px; }
+.status-line { text-align: center; color: var(--soft); font-weight: 600; margin: 0 0 18px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 26px 20px; }
+.card {
+  --tilt: 0deg; --pin: var(--rose); --tint: #fde6ee;
+  position: relative; display: block; width: 100%; padding: 12px 12px 14px; border: 0; cursor: pointer; text-align: left;
+  font: inherit; color: inherit; background: var(--card); border-radius: 20px; box-shadow: var(--shadow);
+  transform: rotate(var(--tilt)); transition: transform .2s ease, box-shadow .2s ease;
+}
+.card::before { /* the push-pin */
+  content: ""; position: absolute; top: -8px; left: 50%; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.85) 0 18%, transparent 20%), var(--pin);
+  box-shadow: 0 3px 4px rgba(0,0,0,.18); z-index: 1;
+}
+.card:hover, .card:focus-visible { transform: rotate(0deg) translateY(-4px) scale(1.02); box-shadow: var(--shadow-lift); outline: none; }
+.card:focus-visible { box-shadow: 0 0 0 4px var(--pin), var(--shadow-lift); }
+.card .pic { background: var(--tint); border-radius: 14px; overflow: hidden; }
+.card img { width: 100%; aspect-ratio: 1; object-fit: contain; display: block; mix-blend-mode: multiply; }
+.card .code { margin-top: 10px; font-size: .75rem; font-weight: 700; color: var(--soft); letter-spacing: .03em; }
+.card .title { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 1.05rem; line-height: 1.2; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.card .sub { font-size: .82rem; color: var(--soft); margin-top: 2px; }
+.card .dots { display: flex; gap: 4px; margin-top: 6px; }
+.card .dots i { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,.08); }
+.c0 { --pin: var(--rose); --tint: #fde6ee; }
+.c1 { --pin: var(--lavender); --tint: #ece8fb; }
+.c2 { --pin: var(--mint); --tint: #dff5ee; }
+.c3 { --pin: var(--sun); --tint: #fff2d2; }
+.c4 { --pin: var(--sky); --tint: #e1f0fc; }
+.c5 { --pin: var(--peach); --tint: #ffe8de; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .card .pic { background: color-mix(in srgb, var(--pin) 18%, var(--card)); }
+  :root:not([data-theme="light"]) .card img { mix-blend-mode: normal; }
+}
+.empty { text-align: center; padding: 50px 16px; color: var(--soft); font-weight: 600; }
+.empty .big { font-size: 2.6rem; }
+
+/* ---------- detail dialog ---------- */
+.dialog { position: fixed; inset: 0; background: rgba(61, 47, 58, .55); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 20; }
+.dialog.open { display: flex; }
+.panel { position: relative; background: var(--card); border-radius: 26px; max-width: 920px; width: 100%; max-height: 92vh; overflow: auto; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); box-shadow: var(--shadow-lift); }
+.panel .pic { position: relative; margin: 18px; border-radius: 18px; background: var(--tint, #fde6ee); display: flex; align-items: center; justify-content: center; min-height: 260px; }
+.panel .pic::before { /* washi tape */
+  content: ""; position: absolute; top: -10px; left: 50%; width: 110px; height: 26px; margin-left: -55px; transform: rotate(-3deg);
+  background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--pin, var(--rose)) 70%, white) 0 8px, color-mix(in srgb, var(--pin, var(--rose)) 45%, white) 8px 16px);
+  opacity: .9; border-radius: 3px;
+}
+.panel .pic img { max-width: 100%; max-height: 74vh; display: block; border-radius: 12px; }
+.panel .info { padding: 26px 24px 24px 6px; }
+.panel .code { font-weight: 700; color: var(--soft); font-size: .85rem; letter-spacing: .03em; }
+.panel h2 { margin: 4px 0 10px; font-size: 1.7rem; line-height: 1.15; }
+.panel p { margin: 0 0 12px; line-height: 1.55; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.tag { font-size: .82rem; font-weight: 700; border-radius: 999px; padding: 3px 12px; background: color-mix(in srgb, var(--lavender) 18%, var(--card)); color: var(--ink); }
+.swatch-chip { display: inline-flex; align-items: center; gap: 6px; font-size: .82rem; font-weight: 600; border: 2px solid var(--line); border-radius: 999px; padding: 2px 10px 2px 4px; }
+.swatch { width: 16px; height: 16px; border-radius: 50%; display: inline-block; border: 1.5px solid rgba(0,0,0,.1); }
+dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 14px 0 0; font-size: .92rem; }
+dt { color: var(--soft); font-weight: 700; }
+dd { margin: 0; }
+.close { position: absolute; top: 10px; right: 12px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--paper); color: var(--ink); font-size: 1.5rem; line-height: 1; cursor: pointer; z-index: 2; }
+.close:hover { background: var(--rose); color: #fff; }
+.toggle, .nav-btn { font: inherit; font-weight: 700; font-size: .88rem; border: 2px solid var(--line); background: var(--card); color: var(--ink); padding: 7px 14px; border-radius: 999px; cursor: pointer; }
+.toggle:hover, .nav-btn:hover { border-color: var(--rose); }
+.dialog-nav { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+
+footer { text-align: center; color: var(--soft); font-size: .85rem; padding: 34px 16px 44px; }
+footer .hearts { color: var(--rose); letter-spacing: 4px; }
+@media (max-width: 720px) {
+  .panel { grid-template-columns: 1fr; }
+  .panel .info { padding: 0 20px 22px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 22px 14px; }
+  .controls select { flex: 1 1 40%; }
+}
+@media (prefers-reduced-motion: reduce) { .card { transition: none; transform: none; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="confetti" aria-hidden="true" id="confetti"></div>
+  <h1 id="title">Mairelys Personal Collection</h1>
+  <p class="tagline">A little collection of happy pins</p>
+  <div class="counter"><b id="total">0</b> pins in the collection</div>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search pins…" aria-label="Search pins">
+    </label>
+    <select id="tag" aria-label="Tag"><option value="">All tags</option></select>
+    <select id="color" aria-label="Colour"><option value="">All colours</option></select>
+  </div>
+  <div class="chips-row" id="categories" aria-label="Categories"></div>
+</div>
+
+<main>
+  <p class="status-line" id="count"></p>
+  <div class="grid" id="grid"></div>
+</main>
+
+<div class="dialog" id="dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+  <div class="panel" id="panel"></div>
+</div>
+
+<footer><div class="hearts">♥ ♥ ♥</div><div id="footer"></div></footer>
+
+<script src="catalog.js"></script>
+<script>
+(function () {
+  "use strict";
+  var data = window.CATALOG || { pins: [] };
+  var pins = data.pins;
+  var activeCategory = "";
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); };
+
+  // Colourful title: every word gets its own colour.
+  var title = $("title");
+  title.innerHTML = title.textContent.split(/\s+/).map(function (w) { return '<span class="word">' + esc(w) + "</span>"; }).join(" ");
+
+  // Soft confetti dots behind the title (fixed pattern, not random, so it never "jumps").
+  var palette = ["#f07a9c", "#9a8cd8", "#58c3a5", "#ffc24b", "#6db6ec", "#ff9f7a"];
+  var spots = [[6, 22, 14], [14, 70, 9], [24, 12, 7], [78, 18, 12], [88, 62, 16], [94, 28, 8], [66, 80, 7], [34, 86, 10], [52, 10, 6], [4, 84, 8]];
+  $("confetti").innerHTML = spots.map(function (s, i) {
+    return '<span style="left:' + s[0] + "%;top:" + s[1] + "%;width:" + s[2] + "px;height:" + s[2] + "px;background:" + palette[i % palette.length] + ';opacity:.55"></span>';
+  }).join("");
+
+  // Each card gets a stable colour and a small tilt derived from its code.
+  function hash(code) { var h = 0; for (var i = 0; i < code.length; i++) h = (h * 31 + code.charCodeAt(i)) >>> 0; return h; }
+  function colorClass(code) { return "c" + (hash(code) % 6); }
+  function tilt(code) { return (((hash(code) >> 3) % 7) - 3) * 0.5; }
+
+  // Filter options.
+  var cats = {}, tags = {}, colors = {};
+  pins.forEach(function (p) {
+    if (p.category) cats[p.category] = 1;
+    (p.tags || []).forEach(function (t) { tags[t] = 1; });
+    (p.colors || []).forEach(function (c) { if (c.name) colors[c.name] = 1; });
+  });
+  function fillSelect(el, values) {
+    values.sort().forEach(function (v) { var o = document.createElement("option"); o.value = v; o.textContent = v; el.appendChild(o); });
+    el.hidden = values.length === 0;
+  }
+  fillSelect($("tag"), Object.keys(tags));
+  fillSelect($("color"), Object.keys(colors));
+  var catNames = Object.keys(cats).sort();
+  if (catNames.length) {
+    $("categories").innerHTML = ['<button class="chip-btn on" data-cat="">All</button>'].concat(catNames.map(function (c) {
+      return '<button class="chip-btn" data-cat="' + esc(c) + '">' + esc(c) + "</button>";
+    })).join("");
+  }
+  $("categories").addEventListener("click", function (e) {
+    var b = e.target.closest(".chip-btn"); if (!b) return;
+    activeCategory = b.getAttribute("data-cat");
+    Array.prototype.forEach.call(this.children, function (x) { x.classList.toggle("on", x === b); });
+    render();
+  });
+  $("total").textContent = pins.length;
+  $("footer").textContent = "Updated " + data.generated;
+
+  function matches(p) {
+    if (activeCategory && p.category !== activeCategory) return false;
+    if ($("tag").value && (p.tags || []).indexOf($("tag").value) < 0) return false;
+    if ($("color").value && !(p.colors || []).some(function (c) { return c.name === $("color").value; })) return false;
+    var q = $("q").value.trim().toLowerCase();
+    if (!q) return true;
+    var hay = [p.code, p.title, p.description, p.category, p.subcategory, (p.tags || []).join(" "), p.page].join(" ").toLowerCase();
+    return q.split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; });
+  }
+
+  var shown = [];
+  function render() {
+    shown = pins.filter(matches);
+    $("count").textContent = shown.length === pins.length ? "" : "Showing " + shown.length + " of " + pins.length + " pins";
+    if (!shown.length) {
+      $("grid").innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="big">🔍</div>No pins match — try another word!</div>';
+      return;
+    }
+    $("grid").innerHTML = shown.map(function (p) {
+      var dots = (p.colors || []).slice(0, 5).map(function (c) { return '<i style="background:' + esc(c.hex) + '" title="' + esc(c.name) + '"></i>'; }).join("");
+      return '<button class="card ' + colorClass(p.code) + '" style="--tilt:' + tilt(p.code) + 'deg" data-code="' + esc(p.code) + '">' +
+        '<div class="pic"><img loading="lazy" src="' + esc(p.thumb || p.image) + '" alt="' + esc(p.title || p.code) + '"></div>' +
+        '<div class="code">' + esc(p.code) + "</div>" +
+        '<div class="title">' + esc(p.title || "Little treasure") + "</div>" +
+        (p.category ? '<div class="sub">' + esc(p.category) + "</div>" : "") +
+        (dots ? '<div class="dots">' + dots + "</div>" : "") + "</button>";
+    }).join("");
+  }
+
+  function money(v) { return v == null ? "" : Number(v).toFixed(2); }
+
+  function open(code) {
+    var index = shown.findIndex(function (x) { return x.code === code; });
+    var p = index >= 0 ? shown[index] : pins.filter(function (x) { return x.code === code; })[0];
+    if (!p) return;
+    var rows = [
+      ["Category", [p.category, p.subcategory].filter(Boolean).join(" · ")],
+      ["Quantity", p.quantity], ["Price", money(p.price)], ["Purchase price", money(p.purchase_price)],
+      ["Added", p.added], ["Notes", p.notes]
+    ].filter(function (r) { return r[1] !== "" && r[1] != null; });
+    var panel = $("panel");
+    panel.className = "panel " + colorClass(p.code);
+    panel.innerHTML =
+      '<button class="close" id="close" aria-label="Close">&times;</button>' +
+      '<div class="pic"><img id="bigimg" src="' + esc(p.image || p.thumb) + '" alt="' + esc(p.title || p.code) + '"></div>' +
+      '<div class="info"><div class="code">' + esc(p.code) + '</div><h2 id="dialog-title">' + esc(p.title || "Little treasure") + "</h2>" +
+      (p.description ? "<p>" + esc(p.description) + "</p>" : "") +
+      ((p.tags || []).length ? '<div class="tags">' + p.tags.map(function (t) { return '<span class="tag">#' + esc(t) + "</span>"; }).join("") + "</div>" : "") +
+      ((p.colors || []).length ? '<div class="tags">' + p.colors.map(function (c) { return '<span class="swatch-chip"><span class="swatch" style="background:' + esc(c.hex) + '"></span>' + esc(c.name) + "</span>"; }).join("") + "</div>" : "") +
+      (rows.length ? "<dl>" + rows.map(function (r) { return "<dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + "</dd>"; }).join("") + "</dl>" : "") +
+      '<div class="dialog-nav">' +
+      (p.transparent ? '<button class="toggle" id="toggle">See it without background</button>' : "") +
+      (shown.length > 1 && index >= 0 ? '<button class="nav-btn" id="prev">‹ Previous</button><button class="nav-btn" id="next">Next ›</button>' : "") +
+      "</div></div>";
+    $("close").onclick = close;
+    if (p.transparent) {
+      var clear = false;
+      $("toggle").onclick = function () {
+        clear = !clear;
+        $("bigimg").src = clear ? p.transparent : p.image;
+        this.textContent = clear ? "See the photo" : "See it without background";
+      };
+    }
+    if ($("prev")) {
+      $("prev").onclick = function () { open(shown[(index - 1 + shown.length) % shown.length].code); };
+      $("next").onclick = function () { open(shown[(index + 1) % shown.length].code); };
+    }
+    $("dialog").classList.add("open");
+    document.body.style.overflow = "hidden";
+    if (location.hash !== "#" + code) history.replaceState(null, "", "#" + code);
+    $("close").focus();
+  }
+  function close() {
+    $("dialog").classList.remove("open");
+    document.body.style.overflow = "";
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+
+  $("grid").addEventListener("click", function (e) { var card = e.target.closest(".card"); if (card) open(card.getAttribute("data-code")); });
+  $("dialog").addEventListener("click", function (e) { if (e.target === this) close(); });
+  document.addEventListener("keydown", function (e) {
+    if (!$("dialog").classList.contains("open")) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowRight" && $("next")) $("next").click();
+    if (e.key === "ArrowLeft" && $("prev")) $("prev").click();
+  });
+  ["q", "tag", "color"].forEach(function (id) { $(id).addEventListener("input", render); });
+  render();
+  if (location.hash.length > 1) open(decodeURIComponent(location.hash.slice(1)));
+})();
+</script>
+</body>
+</html>

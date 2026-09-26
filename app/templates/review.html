@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Review · {{ source.page_label or source.filename }}{% endblock %}
+{% block body_class %}review-body{% endblock %}
+{% block main_class %}review-layout{% endblock %}
+{% block content %}
+<div class="review-toolbar">
+  <div class="group">
+    {% if prev_id %}<a class="btn small" href="/review/{{ prev_id }}" title="Previous photo">‹ Photo</a>{% endif %}
+    <select id="photo-select" aria-label="Choose photo">
+      {% for s in sources %}
+        <option value="{{ s.id }}" {% if s.id == source.id %}selected{% endif %}>#{{ s.id }} {{ s.page_label or s.filename }} ({{ s.pending_count }} pending)</option>
+      {% endfor %}
+    </select>
+    {% if next_id %}<a class="btn small" href="/review/{{ next_id }}" title="Next photo">Photo ›</a>{% endif %}
+  </div>
+  <div class="group">
+    <input id="page-label" type="text" placeholder="Page name (e.g. Binder 1 p.3)" value="{{ source.page_label or '' }}" aria-label="Page name">
+  </div>
+  <div class="group">
+    <button class="btn small" id="mode-select" title="Select / move boxes (V)">Select</button>
+    <button class="btn small" id="mode-draw" title="Draw a new box (D)">Draw box</button>
+    <button class="btn small" id="zoom-out" title="Zoom out (-)">−</button>
+    <button class="btn small" id="zoom-fit" title="Fit (0)">Fit</button>
+    <button class="btn small" id="zoom-in" title="Zoom in (+)">+</button>
+  </div>
+  <div class="group">
+    <button class="btn small" id="approve-all" title="Approve every pending box that has no warning flags">Approve all unflagged</button>
+    <button class="btn small" id="redetect" title="Run the detector again (keeps reviewed boxes)">Re-detect</button>
+    <button class="btn small" id="perspective" title="Preview perspective correction">Perspective</button>
+  </div>
+</div>
+
+<div class="review-main">
+  <div class="viewport" id="viewport" tabindex="0" aria-label="Photo with detected pins">
+    <div class="stage" id="stage">
+      <img id="photo" src="{{ media_url(source.display_path) }}" alt="{{ source.filename }}" draggable="false">
+      <svg id="overlay" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {{ source.width }} {{ source.height }}" preserveAspectRatio="none"></svg>
+    </div>
+    <div class="legend">
+      <span><i class="sw pending"></i>Pending</span>
+      <span><i class="sw approved"></i>Approved</span>
+      <span><i class="sw rejected"></i>Rejected</span>
+      <span><i class="sw selected"></i>Selected</span>
+    </div>
+  </div>
+
+  <aside class="side">
+    <div class="side-head">
+      <strong id="counter">–</strong>
+      <div>
+        <button class="btn small" id="prev-det" title="Previous (← or P)">‹ Prev</button>
+        <button class="btn small" id="next-det" title="Next (→ or N)">Next ›</button>
+      </div>
+    </div>
+
+    <div id="empty-panel" class="muted">Click a box to review it, or choose <em>Draw box</em> to add a pin the detector missed.</div>
+
+    <div id="detail" hidden>
+      <div class="det-title">
+        <span id="det-status" class="badge"></span>
+        <a id="det-pin" href="#" hidden></a>
+        <span id="det-origin" class="muted small"></span>
+      </div>
+      <img id="preview" class="preview" alt="Crop preview">
+      <ul id="flags" class="flags"></ul>
+      <div class="muted small" id="det-confidence"></div>
+
+      <div class="buttons-row">
+        <button class="btn approve" id="approve" title="Approve (A)">Approve</button>
+        <button class="btn reject" id="reject" title="Reject (R)">Reject</button>
+        <button class="btn" id="reset" title="Back to pending (U)">Undo</button>
+      </div>
+
+      <fieldset class="coords">
+        <legend>Crop box (original pixels)</legend>
+        <label>X <input type="number" id="box-x" min="0"></label>
+        <label>Y <input type="number" id="box-y" min="0"></label>
+        <label>W <input type="number" id="box-w" min="1"></label>
+        <label>H <input type="number" id="box-h" min="1"></label>
+        <button class="btn small" id="save-box">Save box</button>
+      </fieldset>
+
+      <div class="buttons-row">
+        <button class="btn small" id="split-auto" title="Find separate pins inside this box">Split (auto)</button>
+        <button class="btn small" id="split-v" title="Cut into left and right halves">Split ⎮</button>
+        <button class="btn small" id="split-h" title="Cut into top and bottom halves">Split ―</button>
+      </div>
+      <div class="buttons-row">
+        <button class="btn small" id="merge" title="Shift+click other boxes, then merge (M)" disabled>Merge selected</button>
+      </div>
+      <p class="muted small">Tip: Shift+click to select several boxes for merging. Drag a box to move it, drag its corners to resize.</p>
+    </div>
+
+    <details class="shortcuts">
+      <summary>Keyboard shortcuts</summary>
+      <ul>
+        <li><kbd>A</kbd> approve, <kbd>R</kbd> reject, <kbd>U</kbd> undo</li>
+        <li><kbd>→</kbd>/<kbd>N</kbd> next, <kbd>←</kbd>/<kbd>P</kbd> previous</li>
+        <li><kbd>D</kbd> draw, <kbd>V</kbd> select, <kbd>M</kbd> merge</li>
+        <li><kbd>+</kbd>/<kbd>−</kbd> zoom, <kbd>0</kbd> fit, mouse wheel zoom, drag background to pan</li>
+      </ul>
+    </details>
+  </aside>
+</div>
+
+<div class="modal" id="perspective-modal" hidden>
+  <div class="modal-box">
+    <button class="modal-close" data-close>&times;</button>
+    <h2>Perspective correction preview</h2>
+    <p class="muted small">Detected page outline and the straightened page. This is a preview only; crops always come from the original photo.</p>
+    <div class="perspective-grid">
+      <img id="persp-outline" alt="Detected page outline">
+      <img id="persp-corrected" alt="Corrected page">
+    </div>
+    <p id="persp-error" class="error" hidden></p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+window.REVIEW = {
+  source: {{ {"id": source.id, "width": source.width, "height": source.height}|tojson }},
+  detections: {{ detections|tojson }},
+  flagDescriptions: {{ flag_descriptions|tojson }}
+};
+</script>
+<script src="/static/js/review.js"></script>
+{% endblock %}

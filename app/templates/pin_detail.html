@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}{{ pin.pin_code }} · Pin Catalog Builder{% endblock %}
+{% block content %}
+<p class="crumbs"><a href="/catalog">← Catalog</a></p>
+<div class="pin-detail">
+  <div class="pin-images">
+    <div class="image-tabs">
+      <button class="tab active" data-src="{{ media_url(pin.crop_path) }}">Photo</button>
+      {% if pin.transparent_path %}<button class="tab" data-src="{{ media_url(pin.transparent_path) }}">Transparent</button>{% endif %}
+    </div>
+    <div class="big-image checker"><img id="big-image" src="{{ media_url(pin.crop_path) }}" alt="{{ pin.title or pin.pin_code }}"></div>
+    <div class="buttons-row">
+      <button class="btn" id="show-original">Show on original page</button>
+      {% if pin.status == 'approved' %}
+      <button class="btn" id="make-transparent">{% if pin.transparent_path %}Redo transparent PNG{% else %}Make transparent PNG{% endif %}</button>
+      {% endif %}
+      <a class="btn" href="/review/{{ pin.source_image_id }}">Open in review</a>
+    </div>
+    {% if pin.colors %}
+    <div class="colors">
+      {% for c in pin.colors %}<span class="chip"><span class="swatch" style="background: {{ c.hex }}"></span>{{ c.name }} <span class="muted small">{{ (c.share * 100)|round|int }}%</span></span>{% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <form class="pin-form" id="pin-form">
+    <div class="pin-head">
+      <h1>{{ pin.pin_code }}</h1>
+      <span class="badge status-{{ pin.status }}">{{ pin.status }}</span>
+    </div>
+    <label>Title <input name="title" value="{{ pin.title }}" maxlength="300"></label>
+    <label>Description <textarea name="description" rows="3" maxlength="5000">{{ pin.description }}</textarea></label>
+    <div class="two">
+      <label>Category <input name="category" value="{{ pin.category or '' }}" list="category-list"></label>
+      <label>Subcategory <input name="subcategory" value="{{ pin.subcategory }}"></label>
+    </div>
+    <datalist id="category-list">{% for c in categories %}<option value="{{ c }}">{% endfor %}</datalist>
+    <label>Tags <span class="muted small">(comma separated)</span> <input name="tags" value="{{ pin.tags|join(', ') }}" list="tag-list"></label>
+    <datalist id="tag-list">{% for t in all_tags %}<option value="{{ t }}">{% endfor %}</datalist>
+    <div class="three">
+      <label>Quantity <input name="quantity" type="number" min="0" value="{{ pin.quantity }}"></label>
+      <label>Purchase price <input name="purchase_price" type="number" min="0" step="0.01" value="{{ pin.purchase_price if pin.purchase_price is not none else '' }}"></label>
+      <label>Selling price <input name="selling_price" type="number" min="0" step="0.01" value="{{ pin.selling_price if pin.selling_price is not none else '' }}"></label>
+    </div>
+    <label>Notes <span class="muted small">(private)</span> <textarea name="notes" rows="3" maxlength="5000">{{ pin.notes }}</textarea></label>
+    <div class="buttons-row">
+      <button class="btn primary" type="submit">Save</button>
+      <span id="save-state" class="muted small"></span>
+    </div>
+
+    <dl class="facts">
+      <dt>Source photo</dt><dd><a href="/review/{{ source.id }}">#{{ source.id }} {{ source.page_label or source.filename }}</a></dd>
+      <dt>Original file</dt><dd>{{ source.filename }}</dd>
+      <dt>Size on photo</dt><dd>{{ pin.width_px }} × {{ pin.height_px }} px</dd>
+      <dt>Location</dt><dd>x {{ pin.box.x }}, y {{ pin.box.y }}</dd>
+      <dt>Added</dt><dd>{{ pin.created_at[:10] }}</dd>
+      <dt>Updated</dt><dd>{{ pin.updated_at[:16].replace('T', ' ') }}</dd>
+    </dl>
+  </form>
+</div>
+
+<div class="modal" id="original-modal" hidden>
+  <div class="modal-box wide">
+    <button class="modal-close" data-close>&times;</button>
+    <h2>{{ pin.pin_code }} on {{ source.page_label or source.filename }}</h2>
+    <div class="original-wrap">
+      <img src="{{ media_url(source.display_path) }}" alt="Original page">
+      <svg viewBox="0 0 {{ source.width }} {{ source.height }}" preserveAspectRatio="none">
+        <rect class="dim" x="0" y="0" width="{{ source.width }}" height="{{ source.height }}" mask="url(#hole)"></rect>
+        <mask id="hole"><rect x="0" y="0" width="{{ source.width }}" height="{{ source.height }}" fill="white"></rect>
+          <rect x="{{ pin.box.x }}" y="{{ pin.box.y }}" width="{{ pin.box.width }}" height="{{ pin.box.height }}" fill="black"></rect></mask>
+        <rect class="highlight" x="{{ pin.box.x }}" y="{{ pin.box.y }}" width="{{ pin.box.width }}" height="{{ pin.box.height }}" stroke-width="{{ ((source.width / 250)|round(0, 'ceil'))|int }}"></rect>
+      </svg>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>window.PIN_CODE = {{ pin.pin_code|tojson }};</script>
+<script src="/static/js/pin.js"></script>
+{% endblock %}

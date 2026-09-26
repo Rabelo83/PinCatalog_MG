@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Private working data: photos, crops and the catalog database stay local.
+# (The public website is published from docs/, which IS committed.)
+data/**
+!data/*/
+!data/*/.gitkeep
+
+# Local sample photos
+sample_images/
