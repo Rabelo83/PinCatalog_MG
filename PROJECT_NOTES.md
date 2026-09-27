@@ -26,7 +26,7 @@ For how to *use* the program, see `README.md`.
 
 - One photo imported (`pin_page_001.jpeg`): 27 pins detected, 0 empty slots or table picked up.
 - PIN-000001 … PIN-000027 created and named.
-- **PIN-000012 "Dachshund with a Bouquet"** was set back to "waiting" with **Undo** in the local app on 26 Sep at 8:23 pm, so it is currently **not** in the catalog or on the website. If that was accidental: Review → select it → Approve (it keeps PIN-000012) → Export Catalog → push.
+- All 27 are approved and on the website. (PIN-000012 was briefly un-approved on 26 Sep and approved again with the same number.)
 - 51 automated tests pass (`python -m pytest`).
 
 ## Known limitation: photo resolution

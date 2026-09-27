@@ -425,6 +425,43 @@
    "quantity": 1
   },
   {
+   "code": "PIN-000012",
+   "title": "Dachshund with a Bouquet",
+   "description": "",
+   "category": "Animals",
+   "subcategory": "Pets",
+   "tags": [
+    "bouquet",
+    "dachshund",
+    "dog",
+    "flowers"
+   ],
+   "colors": [
+    {
+     "hex": "#605655",
+     "name": "dark gray"
+    },
+    {
+     "hex": "#86837c",
+     "name": "gray"
+    },
+    {
+     "hex": "#17171d",
+     "name": "black"
+    },
+    {
+     "hex": "#a7584d",
+     "name": "brown"
+    }
+   ],
+   "page": "pin_page_001.jpeg",
+   "added": "2026-09-26",
+   "image": "images/PIN-000012.jpg",
+   "thumb": "thumbs/PIN-000012_thumb.jpg",
+   "transparent": null,
+   "quantity": 1
+  },
+  {
    "code": "PIN-000013",
    "title": "Giraffe with Roses",
    "description": "",
