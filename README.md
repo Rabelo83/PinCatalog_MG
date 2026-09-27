@@ -65,11 +65,16 @@ Put your photos in this folder:
 data/input/
 ```
 
-JPG, PNG, WEBP, TIFF and iPhone HEIC photos all work. Photo tips:
+JPG, PNG, WEBP, TIFF and iPhone HEIC photos all work.
 
-- Photograph one page at a time, from straight above, in soft even light.
-- Fill most of the picture with the page.
-- Avoid strong shadows and glare on the pins.
+### Photo tips (these matter most for sharp pictures)
+
+The program can only be as sharp as the photo. Each pin's picture is cut from the photo, so small photos give small, blurry pins.
+
+- **Use the original photo file.** Copy photos with AirDrop, a USB cable, iCloud Photos, Google Photos (original quality) or email with **"Actual Size"**. **Do not** send them through WhatsApp, Messages or Messenger: those shrink photos to about a quarter of the detail. (The first sample was only 1080 × 1440, so each pin was about 150 pixels wide.)
+- **Get closer:** photograph **half a page at a time**. Pins come out about twice as big. Any number of photos per page is fine.
+- Hold the phone straight above the page. Don't zoom; move closer instead, and tap on the pins to focus.
+- Use soft, even light (daylight near a window works well). Avoid strong shadows and glare on the enamel.
 
 On the **Dashboard**, click **Process New Images**. For each photo, the program:
 
@@ -94,7 +99,7 @@ Click a box to see a preview of its crop on the right. Then:
 
 - **Approve** (key `A`): the pin gets its permanent number and joins the catalog.
 - **Reject** (key `R`): not a pin (empty slot, shadow, …).
-- **Undo** (key `U`): back to "waiting".
+- **Undo** (key `U`): back to "waiting". Undo on an approved pin takes it out of the catalog, and out of the website at the next export. Approve it again to bring it back with the same number.
 - **Move or resize**: drag the box, or drag its corners. You can also type exact numbers and click **Save box**.
 - **Draw box** (key `D`): drag on the photo to add a pin the program missed.
 - **Merge**: if one pin got two boxes, Shift+click both, then click **Merge**.
@@ -121,7 +126,11 @@ Click a pin to open its page. There you can:
 - click **Show on original page** to see exactly where the pin sits on the photo,
 - click **Make transparent PNG** to get a version with the background removed. The normal photo crop is always kept too.
 
-The program measures colours, sizes and dates by itself. It does **not** invent titles or descriptions; those are yours to write. The database has a place ready (`ai_suggestions`) if an AI helper is added later.
+The program measures colours, sizes and dates by itself. It does **not** invent titles or descriptions. Names come from you, or from an AI that actually looks at the pin:
+
+- The first 27 pins (sample page) were named, categorised and tagged by Claude after looking at each pin. Edit any of them freely.
+- New pins start without a name. Type one on the pin's page. (Automatic naming with a free local AI, Ollama, is planned; see `PROJECT_NOTES.md`.)
+- AI suggestions are also kept separately in the database (`ai_suggestions`), so they never overwrite what you type.
 
 ## 6. Export and publish the website
 
@@ -154,6 +163,8 @@ After each export, upload the updated `docs/` folder:
   ```
 
 The website updates about a minute later. Your photos, crops and database (`data/`) are never uploaded.
+
+If the website still shows the old version, your browser is using a saved copy. Press **Cmd+Shift+R** (Mac) or **Ctrl+F5** (Windows) to reload it properly.
 
 ## 7. Settings
 
@@ -239,9 +250,11 @@ The detector does not assume pins are rectangles:
 1. It evens out colour and contrast on a smaller working copy of the photo.
 2. It works out the felt/page colour: the most common colour, plus the colour around the photo's edges.
 3. It marks everything that differs from the felt (colour, dark metal outlines, edges) and fills in enclosed areas, so white parts of a pin are kept.
-4. It separates pins that touch, finds each shape, and ignores noise by size, shape and distance from the photo edge.
+4. It separates pins that touch, cutting along their dark metal outlines, then finds each shape. It ignores noise by size, shape and distance from the photo edge, and anything running along the edge of the photo (table, binder).
 5. It ignores **empty mounting slots**, which are grey, low-detail and mostly felt-coloured inside.
 6. It merges overlapping boxes, then maps every box back to the full-resolution photo.
+7. When it cuts a crop, it paints over bits of **neighbouring** pins in the margin with the felt colour (`CLEAN_CROP_EDGES`). Pale parts of the pin itself, like a mint-green head, are kept.
+8. It compares each new pin with the catalog (shape and colours) to warn about **possible duplicates**.
 
 Known limitations:
 
@@ -254,9 +267,23 @@ Known limitations:
 - **Colour names** are approximate. Pastel enamel under soft light can read as a neighbouring colour.
 - **Perspective correction** is a preview only (Review → **Perspective**). It needs clear page edges, and detection never depends on it.
 
+## 11. Troubleshooting
+
+| Problem | What to do |
+| --- | --- |
+| `address already in use` when starting | The program is already running in another window. Use that one, or close it (Ctrl+C) and start again. |
+| The website shows "404 File not found" | GitHub **Settings → Pages** must be set to deploy from branch `main`. Wait a minute after saving. |
+| The website shows old names or pictures | Press Cmd+Shift+R (Mac) or Ctrl+F5 (Windows). |
+| A pin is missing from the website | Check it is **approved** in Review (green), then Export Catalog and push again. |
+| A crop cuts off part of a pin | In Review, drag the box's corners to include the whole pin. The crop is remade with the same PIN number. |
+| A photo was skipped | See `data/logs/errors.log`. Duplicates are moved to `data/input/already_imported/`. |
+
 ## For developers
 
 - Python 3.12+, FastAPI, Jinja2, vanilla JS, OpenCV, NumPy, Pillow, SQLite (standard library `sqlite3`).
 - Run the tests with `python -m pytest`.
 - Code layout: `app/vision/` (pure image processing, no database), `app/services/` (ingestion, catalog, exports), `app/routes/` (web pages and JSON API, docs at `/api/docs`).
 - Database paths are stored relative to `data/`, with `/` separators, so the folder can move between Windows and Mac.
+- New database columns are added automatically at start-up (`app/database.py::_migrate`).
+- `index.html` + `.nojekyll` at the repository root forward the site's main address to `docs/`. The export overwrites `docs/` completely (only if it contains the `.pin-catalog-export` marker), so never hand-edit files there.
+- See **`PROJECT_NOTES.md`** for design decisions, current state and open questions, and **`CHANGELOG.md`** for the history.
