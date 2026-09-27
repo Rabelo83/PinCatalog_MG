@@ -149,12 +149,17 @@ def _resized_copy(source: Path, target: Path, max_dimension: int, *, png: bool =
         return True
     target.parent.mkdir(parents=True, exist_ok=True)
     with Image.open(source) as img:
+        if max(img.size) <= max_dimension:
+            # Already small enough: copy the file as-is. Re-saving a JPEG
+            # would compress it a second time and lose detail.
+            shutil.copy2(source, target)
+            return True
         img = img.copy()
-        img.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
-        if png:
-            img.save(target, "PNG", optimize=True)
-        else:
-            img.convert("RGB").save(target, "JPEG", quality=88, optimize=True)
+    img.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
+    if png:
+        img.save(target, "PNG", optimize=True)
+    else:
+        img.convert("RGB").save(target, "JPEG", quality=92, optimize=True)
     return True
 
 

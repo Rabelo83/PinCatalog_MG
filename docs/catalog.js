@@ -1,7 +1,7 @@
 window.CATALOG = {
  "title": "Mairelys Personal Collection",
  "subtitle": "A little collection of happy pins",
- "generated": "2026-09-26",
+ "generated": "2026-09-27",
  "pins": [
   {
    "code": "PIN-000001",
@@ -425,43 +425,6 @@ window.CATALOG = {
    "quantity": 1
   },
   {
-   "code": "PIN-000012",
-   "title": "Dachshund with a Bouquet",
-   "description": "",
-   "category": "Animals",
-   "subcategory": "Pets",
-   "tags": [
-    "bouquet",
-    "dachshund",
-    "dog",
-    "flowers"
-   ],
-   "colors": [
-    {
-     "hex": "#5f5a5a",
-     "name": "dark gray"
-    },
-    {
-     "hex": "#18171b",
-     "name": "black"
-    },
-    {
-     "hex": "#88847c",
-     "name": "gray"
-    },
-    {
-     "hex": "#a3544d",
-     "name": "brown"
-    }
-   ],
-   "page": "pin_page_001.jpeg",
-   "added": "2026-09-26",
-   "image": "images/PIN-000012.jpg",
-   "thumb": "thumbs/PIN-000012_thumb.jpg",
-   "transparent": null,
-   "quantity": 1
-  },
-  {
    "code": "PIN-000013",
    "title": "Giraffe with Roses",
    "description": "",
@@ -796,11 +759,11 @@ window.CATALOG = {
      "name": "black"
     },
     {
-     "hex": "#87867d",
+     "hex": "#8a8a81",
      "name": "gray"
     },
     {
-     "hex": "#5b5b56",
+     "hex": "#343531",
      "name": "dark gray"
     },
     {
@@ -808,7 +771,7 @@ window.CATALOG = {
      "name": "orange"
     },
     {
-     "hex": "#e1b4b3",
+     "hex": "#e2b5b4",
      "name": "pink"
     }
    ],
